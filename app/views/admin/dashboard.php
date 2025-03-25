@@ -1,15 +1,15 @@
 <?php
-session_start();
-if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'Administrador') {
-    header('Location: /Cotizaciones/auth/login.php');
+require_once __DIR__ . '/../../controllers/UsuarioController.php';
+include '../../../layout/admin_header.php';
+
+// Verificar rol después de incluir el header
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'Administrador') {
+    header('Location: /Cotizaciones/auth/login.php?error=unauthorized');
     exit();
 }
 
-require_once __DIR__ . '/../../controllers/UsuarioController.php';
 $usuarioController = new UsuarioController();
 $usuarios = $usuarioController->obtenerTodosUsuarios();
-
-include '../../../layout/admin_header.php';
 ?>
 
 <div class="container mt-4">

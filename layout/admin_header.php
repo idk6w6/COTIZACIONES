@@ -1,3 +1,15 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Solo verificar autenticación si no estamos en páginas de auth
+$current_path = $_SERVER['PHP_SELF'];
+if (!str_contains($current_path, '/auth/') && !isset($_SESSION['usuario_id'])) {
+    header('Location: /Cotizaciones/auth/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,7 +43,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/Cotizaciones/#productos">
+                                <a class="nav-link" href="/Cotizaciones/app/views/productos/productos_editar.php">
                                     <i class="fas fa-box"></i> Productos
                                 </a>
                             </li>
@@ -51,3 +63,5 @@
             </div>
         </header>
     </div>
+</body>
+</html>

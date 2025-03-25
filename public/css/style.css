@@ -611,6 +611,104 @@ section {
     background-color: #e60000;
 }
 
+/* Products Form Styles */
+.productos_editar .form-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    border: 1px solid #e0e0e0;
+}
+
+.productos_editar .form-container h2 {
+    color: #4b0082;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.productos_editar .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.productos_editar .form-group label {
+    color: #4b0082;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.productos_editar .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: border-color 0.3s ease;
+}
+
+.productos_editar .form-control:focus {
+    border-color: #4b0082;
+    box-shadow: 0 0 0 0.2rem rgba(75, 0, 130, 0.25);
+}
+
+.productos_editar .btn-primary {
+    background: linear-gradient(45deg, #4b0082, #673ab7);
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.productos_editar .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(75, 0, 130, 0.3);
+    background: linear-gradient(45deg, #673ab7, #4b0082);
+}
+
+/* Products Table Styles */
+.productos_editar .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.productos_editar .card-header {
+    background: linear-gradient(45deg, #4b0082, #673ab7);
+    color: white;
+    padding: 1rem 1.5rem;
+    border: none;
+}
+
+.productos_editar .card-header h3 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.productos_editar .table {
+    margin: 0;
+}
+
+.productos_editar .table th {
+    background-color: #f8f9fa;
+    color: #4b0082;
+    font-weight: 600;
+    border: none;
+}
+
+.productos_editar .table td {
+    vertical-align: middle;
+}
+
+.productos_editar .btn-warning,
+.productos_editar .btn-danger {
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin: 0 0.2rem;
+}
+
 /* Login and Register Styles */
 .auth-container {
     min-height: 100vh;

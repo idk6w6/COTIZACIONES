@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../controllers/ClientesController.php';
-session_start();
-
+// Remove session_start() since it's already started in admin_header.php
 $controller = new ClientesController();
 $resultado = $controller->manejarVistaEdicion();
 $clientes = $resultado['clientes'];
