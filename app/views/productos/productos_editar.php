@@ -44,7 +44,7 @@ $productos = $controller->index();
                                     <option value="16" selected>16% - General</option>
                                     <option value="8">8% - Fronterizo</option>
                                 </select>
-                                <small class="form-text text-muted">Tasa de IVA según la región y tipo de producto en México</small>
+                                <small class="form-text text-muted">Tasa de IVA según la región y tipo de producto</small>
                             </div>
                         </div>
                     </div>

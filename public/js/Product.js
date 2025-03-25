@@ -185,3 +185,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const formContainer = document.querySelector('.form-container');
     formContainer.insertBefore(addNewBtn, formContainer.firstChild);
 });
+
+function cotizarProducto(id) {
+    // TODO: Implement quotation functionality
+    alert('Funcionalidad de cotización en desarrollo');
+}

@@ -1,3 +1,14 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if user is logged in
+if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
+    header('Location: /Cotizaciones/auth/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -41,7 +52,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Cotizaciones/#productos">
+                                    <a class="nav-link" href="/Cotizaciones/app/views/productos/productos_crear.php">
                                         <i class="fas fa-box"></i> Productos
                                     </a>
                                 </li>
