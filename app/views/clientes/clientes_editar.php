@@ -103,65 +103,75 @@ $cliente = $resultado['cliente'];
                         <button type="submit" class="btn btn-primary">Actualizar</button>
                     </form>
                 <?php else: ?>
-                    <p>Cliente no encontrado.</p>
+                    <!-- Eliminar el mensaje aquí ya que se mostrará en la sección de resultados -->
                 <?php endif; ?>
-                <table class="table mt-4">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Celular</th>
-                            <th>Tel. Oficina</th>
-                            <th>Correo</th>
-                            <th>Dirección</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (isset($_GET['search']) && !empty($clientes)): ?>
-                            <?php foreach ($clientes as $cliente): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($cliente['nombre']); ?></td>
-                                    <td><?php echo htmlspecialchars($cliente['celular1']); ?></td>
-                                    <td><?php echo htmlspecialchars($cliente['tel_oficina']); ?></td>
-                                    <td><?php echo htmlspecialchars($cliente['correo']); ?></td>
-                                    <td><?php echo htmlspecialchars($cliente['direccion']); ?></td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="?id=<?php echo $cliente['id']; ?>" class="btn btn-warning btn-sm me-2">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </a>
-                                            <a href="#" onclick="return confirmarEliminacionCliente(<?= $cliente['id'] ?>)" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash-alt"></i> Eliminar
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php elseif (isset($cliente) && $cliente): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($cliente['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($cliente['celular1']); ?></td>
-                                <td><?php echo htmlspecialchars($cliente['tel_oficina']); ?></td>
-                                <td><?php echo htmlspecialchars($cliente['correo']); ?></td>
-                                <td><?php echo htmlspecialchars($cliente['direccion']); ?></td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="?id=<?php echo $cliente['id']; ?>" class="btn btn-warning btn-sm me-2">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
-                                        <a href="#" onclick="return confirmarEliminacionCliente(<?= $cliente['id'] ?>)" class="btn btn-danger btn-sm">
-                                            <i class="fas fa-trash-alt"></i> Eliminar
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="6">No hay datos del cliente.</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                <div class="search-results mt-4">
+                    <?php if (isset($_GET['search']) && empty($clientes)): ?>
+                        <div class="alert alert-info">Cliente no encontrado.</div>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($clientes)): ?>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Celular</th>
+                                        <th>Tel. Oficina</th>
+                                        <th>Correo</th>
+                                        <th>Dirección</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (isset($_GET['search']) && !empty($clientes)): ?>
+                                        <?php foreach ($clientes as $cliente): ?>
+                                            <tr>
+                                                <td><?php echo htmlspecialchars($cliente['nombre']); ?></td>
+                                                <td><?php echo htmlspecialchars($cliente['celular1']); ?></td>
+                                                <td><?php echo htmlspecialchars($cliente['tel_oficina']); ?></td>
+                                                <td><?php echo htmlspecialchars($cliente['correo']); ?></td>
+                                                <td><?php echo htmlspecialchars($cliente['direccion']); ?></td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <a href="?id=<?php echo $cliente['id']; ?>" class="btn btn-warning btn-sm me-2">
+                                                            <i class="fas fa-edit"></i> Editar
+                                                        </a>
+                                                        <a href="#" onclick="return confirmarEliminacionCliente(<?= $cliente['id'] ?>)" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php elseif (isset($cliente) && $cliente): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($cliente['nombre']); ?></td>
+                                            <td><?php echo htmlspecialchars($cliente['celular1']); ?></td>
+                                            <td><?php echo htmlspecialchars($cliente['tel_oficina']); ?></td>
+                                            <td><?php echo htmlspecialchars($cliente['correo']); ?></td>
+                                            <td><?php echo htmlspecialchars($cliente['direccion']); ?></td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a href="?id=<?php echo $cliente['id']; ?>" class="btn btn-warning btn-sm me-2">
+                                                        <i class="fas fa-edit"></i> Editar
+                                                    </a>
+                                                    <a href="#" onclick="return confirmarEliminacionCliente(<?= $cliente['id'] ?>)" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="6">No hay datos del cliente.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>

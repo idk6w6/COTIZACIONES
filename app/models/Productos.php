@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../../config/db.php');
 
 class Productos {
-    private $conn;
+    public $conn; // Change to public so controller can access it
 
     public function __construct() {
         $database = new Database();
@@ -12,7 +12,7 @@ class Productos {
     public function getAll() {
         try {
             $query = "SELECT id, nombre_producto, descripcion, precio, iva, 
-                             unidad_medida_id, unidad_peso, metodo_costeo_id 
+                             unidad_medida_id, unidad_peso, metodo_costeo_id, stock 
                       FROM productos 
                       ORDER BY id DESC";
             $stmt = $this->conn->prepare($query);
@@ -25,9 +25,15 @@ class Productos {
     }
 
     public function create($data) {
-        // Validar valores no negativos
-        if ($data['precio'] < 0 || $data['unidad_peso'] < 0) {
-            throw new Exception('El precio y peso no pueden ser menores a 0');
+        // Validar valores no negativos y límites máximos
+        if ($data['precio'] < 0 || $data['precio'] > 99999.99) {
+            throw new Exception('El precio debe estar entre 0 y 99,999.99');
+        }
+        if ($data['unidad_peso'] < 0 || $data['unidad_peso'] > 999.99) {
+            throw new Exception('El peso debe estar entre 0 y 999.99');
+        }
+        if ($data['stock'] < 0 || $data['stock'] > 9999) {
+            throw new Exception('El stock debe estar entre 0 y 9,999 unidades');
         }
 
         // Validar tasa de IVA mexicana
@@ -37,18 +43,24 @@ class Productos {
         }
 
         $query = "INSERT INTO productos (nombre_producto, descripcion, precio, iva, 
-                                       unidad_medida_id, unidad_peso, metodo_costeo_id) 
+                                       unidad_medida_id, unidad_peso, metodo_costeo_id, stock) 
                  VALUES (:nombre_producto, :descripcion, :precio, :iva, 
-                        :unidad_medida_id, :unidad_peso, :metodo_costeo_id)";
+                        :unidad_medida_id, :unidad_peso, :metodo_costeo_id, :stock)";
         
         $stmt = $this->conn->prepare($query);
         return $stmt->execute($data);
     }
 
     public function update($data) {
-        // Validar valores no negativos
-        if ($data['precio'] < 0 || $data['unidad_peso'] < 0) {
-            throw new Exception('El precio y peso no pueden ser menores a 0');
+        // Validar valores no negativos y límites máximos
+        if ($data['precio'] < 0 || $data['precio'] > 99999.99) {
+            throw new Exception('El precio debe estar entre 0 y 99,999.99');
+        }
+        if ($data['unidad_peso'] < 0 || $data['unidad_peso'] > 999.99) {
+            throw new Exception('El peso debe estar entre 0 y 999.99');
+        }
+        if ($data['stock'] < 0 || $data['stock'] > 9999) {
+            throw new Exception('El stock debe estar entre 0 y 9,999 unidades');
         }
 
         // Validar tasa de IVA mexicana
@@ -58,14 +70,14 @@ class Productos {
         }
 
         $query = "UPDATE productos SET 
-                 clave = :clave,
                  nombre_producto = :nombre_producto,
                  descripcion = :descripcion,
                  precio = :precio,
                  iva = :iva,
                  unidad_medida_id = :unidad_medida_id,
                  unidad_peso = :unidad_peso,
-                 metodo_costeo_id = :metodo_costeo_id
+                 metodo_costeo_id = :metodo_costeo_id,
+                 stock = :stock
                  WHERE id = :id";
         
         $stmt = $this->conn->prepare($query);
@@ -73,9 +85,55 @@ class Productos {
     }
 
     public function delete($id) {
-        $query = "DELETE FROM productos WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        return $stmt->execute(['id' => $id]);
+        try {
+            $this->conn->beginTransaction();
+            
+            // 1. Verificar si el producto está en detalles_cotizacion
+            $checkCotizacionQuery = "SELECT COUNT(*) FROM detalles_cotizacion WHERE producto_id = :id";
+            $checkStmt = $this->conn->prepare($checkCotizacionQuery);
+            $checkStmt->execute(['id' => $id]);
+            
+            if ($checkStmt->fetchColumn() > 0) {
+                throw new Exception("No se puede eliminar el producto porque está siendo usado en cotizaciones existentes");
+            }
+
+            // 2. Obtener los IDs relacionados para restaurarlos después
+            $getIdsQuery = "SELECT metodo_costeo_id, unidad_medida_id FROM productos WHERE id = :id";
+            $getIdsStmt = $this->conn->prepare($getIdsQuery);
+            $getIdsStmt->execute(['id' => $id]);
+            $ids = $getIdsStmt->fetch(PDO::FETCH_ASSOC);
+
+            // 3. Eliminar temporalmente las referencias
+            $updateQuery = "UPDATE productos SET 
+                          metodo_costeo_id = NULL,
+                          unidad_medida_id = NULL 
+                          WHERE id = :id";
+            $updateStmt = $this->conn->prepare($updateQuery);
+            $updateStmt->execute(['id' => $id]);
+
+            // 4. Eliminar el producto
+            $deleteQuery = "DELETE FROM productos WHERE id = :id";
+            $deleteStmt = $this->conn->prepare($deleteQuery);
+            $result = $deleteStmt->execute(['id' => $id]);
+
+            // 5. Restaurar los registros en metodos_costeo y unidades_medida si existen
+            if ($ids['metodo_costeo_id']) {
+                $this->conn->exec("UPDATE metodos_costeo SET descripcion = descripcion WHERE id = " . $ids['metodo_costeo_id']);
+            }
+            if ($ids['unidad_medida_id']) {
+                $this->conn->exec("UPDATE unidades_medida SET descripcion = descripcion WHERE id = " . $ids['unidad_medida_id']);
+            }
+
+            $this->conn->commit();
+            return $result;
+        } catch (PDOException $e) {
+            $this->conn->rollBack();
+            error_log("Error al eliminar producto: " . $e->getMessage());
+            throw new Exception("Error en la base de datos al eliminar el producto: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            throw $e;
+        }
     }
 
     public function getUnidadesMedida() {
@@ -90,6 +148,13 @@ class Productos {
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getProducto($id) {
+        $query = "SELECT * FROM productos WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>

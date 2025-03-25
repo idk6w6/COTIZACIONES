@@ -31,7 +31,9 @@ $productos = $controller->index();
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="precio">Precio*</label>
-                                <input type="number" step="0.01" min="0" class="form-control" id="precio" name="precio" required>
+                                <input type="number" step="0.01" min="0" max="99999.99" 
+                                       class="form-control" id="precio" name="precio" required>
+                                <small class="form-text text-muted">Máximo: $99,999.99</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -61,7 +63,17 @@ $productos = $controller->index();
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="unidad_peso">Peso*</label>
-                                <input type="number" step="0.01" min="0" class="form-control" id="unidad_peso" name="unidad_peso" required>
+                                <input type="number" step="0.01" min="0" max="999.99" 
+                                       class="form-control" id="unidad_peso" name="unidad_peso" required>
+                                <small class="form-text text-muted">Máximo: 999.99</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="stock">Unidades Disponibles*</label>
+                                <input type="number" min="0" max="9999" 
+                                       class="form-control" id="stock" name="stock" required>
+                                <small class="form-text text-muted">Máximo: 9,999 unidades</small>
                             </div>
                         </div>
                     </div>
@@ -89,8 +101,13 @@ $productos = $controller->index();
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
+                                    <th>Descripción</th>
                                     <th>Precio</th>
                                     <th>IVA</th>
+                                    <th>Unidad de Medida</th>
+                                    <th>Peso</th>
+                                    <th>Stock</th>
+                                    <th>Método de Costeo</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -98,8 +115,27 @@ $productos = $controller->index();
                                 <?php foreach ($productos as $producto): ?>
                                     <tr>
                                         <td><?php echo $producto['nombre_producto']; ?></td>
+                                        <td><?php echo substr($producto['descripcion'], 0, 50) . (strlen($producto['descripcion']) > 50 ? '...' : ''); ?></td>
                                         <td>$<?php echo number_format($producto['precio'], 2); ?></td>
                                         <td><?php echo $producto['iva']; ?>%</td>
+                                        <td>
+                                            <?php foreach ($unidades_medida as $unidad): 
+                                                if ($unidad['id'] == $producto['unidad_medida_id']) {
+                                                    echo $unidad['descripcion'];
+                                                    break;
+                                                }
+                                            endforeach; ?>
+                                        </td>
+                                        <td><?php echo $producto['unidad_peso']; ?></td>
+                                        <td><?php echo $producto['stock']; ?></td>
+                                        <td>
+                                            <?php foreach ($metodos_costeo as $metodo): 
+                                                if ($metodo['id'] == $producto['metodo_costeo_id']) {
+                                                    echo $metodo['descripcion'];
+                                                    break;
+                                                }
+                                            endforeach; ?>
+                                        </td>
                                         <td>
                                             <button class="btn btn-warning btn-sm" onclick="editarProducto(<?php echo $producto['id']; ?>)">
                                                 <i class="fas fa-edit"></i>
@@ -118,4 +154,7 @@ $productos = $controller->index();
         </div>
     </div>
 </div>
+<script src="/Cotizaciones/public/js/Product.js"></script>
+</body>
+</html>
 

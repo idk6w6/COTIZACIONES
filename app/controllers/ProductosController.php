@@ -15,14 +15,14 @@ class ProductosController {
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'store') {
             $data = [
-                'clave' => $_POST['clave'],
                 'nombre_producto' => $_POST['nombre_producto'],
                 'descripcion' => $_POST['descripcion'],
                 'precio' => $_POST['precio'],
                 'iva' => $_POST['iva'],
                 'unidad_medida_id' => $_POST['unidad_medida_id'],
                 'unidad_peso' => $_POST['unidad_peso'],
-                'metodo_costeo_id' => $_POST['metodo_costeo_id']
+                'metodo_costeo_id' => $_POST['metodo_costeo_id'],
+                'stock' => $_POST['stock']
             ];
 
             if ($this->model->create($data)) {
@@ -38,14 +38,14 @@ class ProductosController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
             $data = [
                 'id' => $_POST['id'],
-                'clave' => $_POST['clave'],
                 'nombre_producto' => $_POST['nombre_producto'],
                 'descripcion' => $_POST['descripcion'],
                 'precio' => $_POST['precio'],
                 'iva' => $_POST['iva'],
                 'unidad_medida_id' => $_POST['unidad_medida_id'],
                 'unidad_peso' => $_POST['unidad_peso'],
-                'metodo_costeo_id' => $_POST['metodo_costeo_id']
+                'metodo_costeo_id' => $_POST['metodo_costeo_id'],
+                'stock' => $_POST['stock']
             ];
 
             if ($this->model->update($data)) {
@@ -59,13 +59,21 @@ class ProductosController {
 
     public function destroy() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
-            if ($this->model->delete($_POST['id'])) {
-                header('Location: /Cotizaciones/app/views/productos/productos_editar.php?success=3');
+            try {
+                $id = $_POST['id'];
+                if ($this->model->delete($id)) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true]);
+                    exit;
+                }
+                throw new Exception('No se pudo eliminar el producto');
+            } catch (Exception $e) {
+                error_log("Error al eliminar producto: " . $e->getMessage());
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => $e->getMessage()]);
                 exit;
             }
         }
-        header('Location: /Cotizaciones/app/views/productos/productos_editar.php?error=3');
-        exit;
     }
 
     public function getUnidadesMedida() {
@@ -75,9 +83,35 @@ class ProductosController {
     public function getMetodosCosteo() {
         return $this->model->getMetodosCosteo();
     }
+
+    public function get($id) {
+        try {
+            $query = "SELECT * FROM productos WHERE id = :id";
+            $stmt = $this->model->conn->prepare($query);
+            $stmt->execute(['id' => $id]);
+            $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            header('Content-Type: application/json');
+            if ($producto) {
+                echo json_encode($producto);
+            } else {
+                echo json_encode(['error' => 'Producto no encontrado']);
+            }
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => $e->getMessage()]);
+            exit;
+        }
+    }
 }
 
-// Handle POST requests
+// Handle GET and POST requests
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'get') {
+    $controller = new ProductosController();
+    $controller->get($_GET['id']);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new ProductosController();
     switch ($_POST['action']) {

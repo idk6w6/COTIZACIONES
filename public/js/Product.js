@@ -52,10 +52,12 @@ function validateForm(e) {
     const precio = parseFloat(document.getElementById('precio').value);
     const iva = parseFloat(document.getElementById('iva').value);
     const peso = parseFloat(document.getElementById('unidad_peso').value);
+    const stock = parseInt(document.getElementById('stock').value);
 
-    if (precio < 0) {
+    // Validar precio
+    if (precio < 0 || precio > 99999.99) {
         e.preventDefault();
-        alert('El precio no puede ser menor a 0');
+        alert('El precio debe estar entre 0 y 99,999.99');
         return false;
     }
 
@@ -67,9 +69,17 @@ function validateForm(e) {
         return false;
     }
 
-    if (peso < 0) {
+    // Validar peso
+    if (peso < 0 || peso > 999.99) {
         e.preventDefault();
-        alert('El peso no puede ser menor a 0');
+        alert('El peso debe estar entre 0 y 999.99');
+        return false;
+    }
+
+    // Validar stock
+    if (stock < 0 || stock > 9999) {
+        e.preventDefault();
+        alert('El stock debe estar entre 0 y 9,999 unidades');
         return false;
     }
 
@@ -77,52 +87,101 @@ function validateForm(e) {
 }
 
 function editarProducto(id) {
-    // Implement edit functionality
     fetch(`/Cotizaciones/app/controllers/ProductosController.php?action=get&id=${id}`)
         .then(response => response.json())
         .then(data => {
+            if (data.error) {
+                console.error('Error:', data.error);
+                alert('Error al cargar el producto: ' + data.error);
+                return;
+            }
+            
             // Fill form with product data
-            document.getElementById('clave').value = data.clave;
-            document.getElementById('nombre_producto').value = data.nombre_producto;
-            document.getElementById('descripcion').value = data.descripcion;
-            document.getElementById('precio').value = data.precio;
-            document.getElementById('iva').value = data.iva;
-            document.getElementById('unidad_medida_id').value = data.unidad_medida_id;
-            document.getElementById('unidad_peso').value = data.unidad_peso;
-            document.getElementById('metodo_costeo_id').value = data.metodo_costeo_id;
+            document.getElementById('nombre_producto').value = data.nombre_producto || '';
+            document.getElementById('descripcion').value = data.descripcion || '';
+            document.getElementById('precio').value = data.precio || '';
+            document.getElementById('iva').value = data.iva || '16';
+            document.getElementById('unidad_medida_id').value = data.unidad_medida_id || '';
+            document.getElementById('unidad_peso').value = data.unidad_peso || '';
+            document.getElementById('metodo_costeo_id').value = data.metodo_costeo_id || '';
             
             // Change form action to update
-            document.getElementById('productoForm').action = '/Cotizaciones/app/controllers/ProductosController.php';
-            document.querySelector('input[name="action"]').value = 'update';
+            const form = document.getElementById('productoForm');
+            form.querySelector('input[name="action"]').value = 'update';
+            
+            // Remove existing hidden id input if any
+            const existingId = form.querySelector('input[name="id"]');
+            if (existingId) {
+                existingId.remove();
+            }
             
             // Add hidden input for product id
             const hiddenId = document.createElement('input');
             hiddenId.type = 'hidden';
             hiddenId.name = 'id';
             hiddenId.value = id;
-            document.getElementById('productoForm').appendChild(hiddenId);
+            form.appendChild(hiddenId);
+
+            // Change button text
+            form.querySelector('button[type="submit"]').textContent = 'Actualizar Producto';
+            
+            // Scroll to form
+            form.scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar el producto: ' + error.message);
         });
 }
 
 function eliminarProducto(id) {
     if (confirm('¿Está seguro de que desea eliminar este producto?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/Cotizaciones/app/controllers/ProductosController.php';
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('id', id);
 
-        const actionInput = document.createElement('input');
-        actionInput.type = 'hidden';
-        actionInput.name = 'action';
-        actionInput.value = 'delete';
-
-        const idInput = document.createElement('input');
-        idInput.type = 'hidden';
-        idInput.name = 'id';
-        idInput.value = id;
-
-        form.appendChild(actionInput);
-        form.appendChild(idInput);
-        document.body.appendChild(form);
-        form.submit();
+        fetch('/Cotizaciones/app/controllers/ProductosController.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            try {
+                const result = JSON.parse(data);
+                if (result.success) {
+                    window.location.reload();
+                } else {
+                    alert('Error al eliminar el producto: ' + (result.error || 'Error desconocido'));
+                }
+            } catch (e) {
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al eliminar el producto');
+        });
     }
 }
+
+// Add event listener for form reset when adding new product
+document.addEventListener('DOMContentLoaded', function() {
+    const addNewBtn = document.createElement('button');
+    addNewBtn.type = 'button';
+    addNewBtn.className = 'btn btn-success mb-3';
+    addNewBtn.textContent = 'Agregar Nuevo Producto';
+    addNewBtn.onclick = function() {
+        const form = document.getElementById('productoForm');
+        form.reset();
+        form.querySelector('input[name="action"]').value = 'store';
+        form.querySelector('button[type="submit"]').textContent = 'Guardar Producto';
+        const existingId = form.querySelector('input[name="id"]');
+        if (existingId) {
+            existingId.remove();
+        }
+        form.scrollIntoView({ behavior: 'smooth' });
+    };
+    
+    const formContainer = document.querySelector('.form-container');
+    formContainer.insertBefore(addNewBtn, formContainer.firstChild);
+});
