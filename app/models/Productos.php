@@ -12,7 +12,8 @@ class Productos {
     public function getAll() {
         try {
             $query = "SELECT id, nombre_producto, descripcion, precio, iva, 
-                             unidad_medida_id, unidad_peso, metodo_costeo_id, stock 
+                             unidad_medida_id, unidad_peso, metodo_costeo_id, 
+                             stock, descuento 
                       FROM productos 
                       ORDER BY id DESC";
             $stmt = $this->conn->prepare($query);
@@ -42,10 +43,15 @@ class Productos {
             throw new Exception('Tasa de IVA no válida para México');
         }
 
-        $query = "INSERT INTO productos (nombre_producto, descripcion, precio, iva, 
-                                       unidad_medida_id, unidad_peso, metodo_costeo_id, stock) 
-                 VALUES (:nombre_producto, :descripcion, :precio, :iva, 
-                        :unidad_medida_id, :unidad_peso, :metodo_costeo_id, :stock)";
+        $query = "INSERT INTO productos (
+            nombre_producto, descripcion, precio, iva, 
+            unidad_medida_id, unidad_peso, metodo_costeo_id, 
+            stock, descuento
+        ) VALUES (
+            :nombre_producto, :descripcion, :precio, :iva, 
+            :unidad_medida_id, :unidad_peso, :metodo_costeo_id, 
+            :stock, :descuento
+        )";
         
         $stmt = $this->conn->prepare($query);
         return $stmt->execute($data);
@@ -70,15 +76,16 @@ class Productos {
         }
 
         $query = "UPDATE productos SET 
-                 nombre_producto = :nombre_producto,
-                 descripcion = :descripcion,
-                 precio = :precio,
-                 iva = :iva,
-                 unidad_medida_id = :unidad_medida_id,
-                 unidad_peso = :unidad_peso,
-                 metodo_costeo_id = :metodo_costeo_id,
-                 stock = :stock
-                 WHERE id = :id";
+            nombre_producto = :nombre_producto,
+            descripcion = :descripcion,
+            precio = :precio,
+            iva = :iva,
+            unidad_medida_id = :unidad_medida_id,
+            unidad_peso = :unidad_peso,
+            metodo_costeo_id = :metodo_costeo_id,
+            stock = :stock,
+            descuento = :descuento
+            WHERE id = :id";
         
         $stmt = $this->conn->prepare($query);
         return $stmt->execute($data);
@@ -155,6 +162,25 @@ class Productos {
         $stmt = $this->conn->prepare($query);
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function search($searchTerm) {
+        try {
+            $query = "SELECT id, nombre_producto, descripcion, precio, iva, 
+                             unidad_medida_id, unidad_peso, metodo_costeo_id, 
+                             stock, descuento 
+                      FROM productos 
+                      WHERE LOWER(nombre_producto) LIKE LOWER(:searchTerm) 
+                         OR LOWER(descripcion) LIKE LOWER(:searchTerm)
+                      ORDER BY nombre_producto ASC";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error en search: " . $e->getMessage());
+            return [];
+        }
     }
 }
 ?>

@@ -1,45 +1,3 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-
-const Product = sequelize.define('Product', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    clave: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        unique: true
-    },
-    nombre_producto: {
-        type: DataTypes.STRING(100)
-    },
-    descripcion: {
-        type: DataTypes.TEXT
-    },
-    precio: {
-        type: DataTypes.DECIMAL(10, 2)
-    },
-    iva: {
-        type: DataTypes.DECIMAL(5, 2)
-    },
-    unidad_medida_id: {
-        type: DataTypes.INTEGER
-    },
-    unidad_peso: {
-        type: DataTypes.DECIMAL(10, 2)
-    },
-    metodo_costeo_id: {
-        type: DataTypes.INTEGER
-    }
-}, {
-    tableName: 'productos',
-    timestamps: false
-});
-
-module.exports = Product;
-
 // Client-side validation and functionality
 document.addEventListener('DOMContentLoaded', function() {
     const productoForm = document.getElementById('productoForm');
@@ -164,29 +122,10 @@ function eliminarProducto(id) {
     }
 }
 
-// Add event listener for form reset when adding new product
-document.addEventListener('DOMContentLoaded', function() {
-    const addNewBtn = document.createElement('button');
-    addNewBtn.type = 'button';
-    addNewBtn.className = 'btn btn-success mb-3';
-    addNewBtn.textContent = 'Agregar Nuevo Producto';
-    addNewBtn.onclick = function() {
-        const form = document.getElementById('productoForm');
-        form.reset();
-        form.querySelector('input[name="action"]').value = 'store';
-        form.querySelector('button[type="submit"]').textContent = 'Guardar Producto';
-        const existingId = form.querySelector('input[name="id"]');
-        if (existingId) {
-            existingId.remove();
-        }
-        form.scrollIntoView({ behavior: 'smooth' });
-    };
-    
-    const formContainer = document.querySelector('.form-container');
-    formContainer.insertBefore(addNewBtn, formContainer.firstChild);
-});
-
 function cotizarProducto(id) {
-    // TODO: Implement quotation functionality
-    alert('Funcionalidad de cotización en desarrollo');
+    if (!id) {
+        alert('Error: No se pudo identificar el producto');
+        return;
+    }
+    window.location.href = `/Cotizaciones/app/views/cotizaciones/cotizaciones_crear.php?producto_id=${id}`;
 }

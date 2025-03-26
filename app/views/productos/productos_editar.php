@@ -24,7 +24,7 @@ $productos = $controller->index();
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="descripcion">Descripción detallada*</label>
+                        <label for="descripcion">Descripción*</label>
                         <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
                     </div>
                     <div class="row">
@@ -48,6 +48,19 @@ $productos = $controller->index();
                             </div>
                         </div>
                     </div>
+
+                    <!-- Nuevo campo de descuento -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="descuento">Descuento (%)</label>
+                                <input type="number" class="form-control" id="descuento" name="descuento" 
+                                       value="0" min="0" max="100" step="0.01">
+                                <small class="form-text text-muted">Porcentaje de descuento aplicable al producto (0-100%)</small>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -104,6 +117,7 @@ $productos = $controller->index();
                                     <th>Descripción</th>
                                     <th>Precio</th>
                                     <th>IVA</th>
+                                    <th>Descuento</th>
                                     <th>Unidad de Medida</th>
                                     <th>Peso</th>
                                     <th>Stock</th>
@@ -118,6 +132,7 @@ $productos = $controller->index();
                                         <td><?php echo substr($producto['descripcion'], 0, 50) . (strlen($producto['descripcion']) > 50 ? '...' : ''); ?></td>
                                         <td>$<?php echo number_format($producto['precio'], 2); ?></td>
                                         <td><?php echo $producto['iva']; ?>%</td>
+                                        <td><?php echo isset($producto['descuento']) ? $producto['descuento'] : 0; ?>%</td>
                                         <td>
                                             <?php foreach ($unidades_medida as $unidad): 
                                                 if ($unidad['id'] == $producto['unidad_medida_id']) {

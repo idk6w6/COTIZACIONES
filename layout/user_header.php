@@ -57,7 +57,7 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Cotizaciones/#cotizacion">
+                                    <a class="nav-link" href="/Cotizaciones/app/views/cotizaciones/cotizaciones_crear.php">
                                         <i class="fas fa-file-invoice-dollar"></i> Cotizaciones
                                     </a>
                                 </li>

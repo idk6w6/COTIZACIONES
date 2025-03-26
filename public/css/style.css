@@ -1488,3 +1488,120 @@ section {
     margin-bottom: 0;
 }
 
+/* Estilos para el formulario de cotización */
+.cotizacion-crear .card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.cotizacion-crear .card-header {
+    background: linear-gradient(135deg, #4b0082 0%, #6a11cb 100%);
+    padding: 1.5rem;
+}
+
+.cotizacion-crear .card-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.cotizacion-crear .form-label {
+    color: #4b0082;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.cotizacion-crear .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: border-color 0.3s ease;
+}
+
+.cotizacion-crear .form-control:focus {
+    border-color: #4b0082;
+    box-shadow: 0 0 0 0.2rem rgba(75, 0, 130, 0.25);
+}
+
+.cotizacion-crear .form-control[readonly] {
+    background-color: #f8f9fa;
+}
+
+.cotizacion-crear .input-group-text {
+    background-color: #4b0082;
+    color: white;
+    border: none;
+}
+
+.cotizacion-crear .btn-primary {
+    background: linear-gradient(45deg, #4b0082, #6a11cb);
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.cotizacion-crear .btn-primary:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #6a11cb, #4b0082);
+}
+
+.cotizacion-crear .btn-secondary {
+    background: #6c757d;
+    border: none;
+    padding: 1rem;
+}
+
+.cotizacion-crear h4 {
+    color: #4b0082;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Search form styles */
+.search-form .input-group {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.search-form .form-control {
+    border: none;
+    padding-left: 1.5rem;
+    height: 50px;
+    border-radius: 50px 0 0 50px;
+}
+
+.search-form .btn {
+    padding: 0 1.5rem;
+    border: none;
+    border-radius: 0;
+}
+
+.search-form .btn:last-child {
+    border-radius: 0 50px 50px 0;
+}
+
+.search-form .form-control:focus {
+    box-shadow: none;
+}
+
+/* Table hover effect */
+.table-hover tbody tr:hover {
+    background-color: rgba(104, 58, 183, 0.05);
+    cursor: pointer;
+}
+
+/* Button group styles */
+.btn-group .btn {
+    padding: 0.5rem 1rem;
+    margin: 0 2px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-2px);
+}
+

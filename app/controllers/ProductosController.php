@@ -9,25 +9,36 @@ class ProductosController {
     }
 
     public function index() {
+        if (isset($_GET['search'])) {
+            $searchTerm = trim($_GET['search']);
+            if (!empty($searchTerm)) {
+                return $this->model->search($searchTerm);
+            }
+        }
         return $this->model->getAll();
     }
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'store') {
-            $data = [
-                'nombre_producto' => $_POST['nombre_producto'],
-                'descripcion' => $_POST['descripcion'],
-                'precio' => $_POST['precio'],
-                'iva' => $_POST['iva'],
-                'unidad_medida_id' => $_POST['unidad_medida_id'],
-                'unidad_peso' => $_POST['unidad_peso'],
-                'metodo_costeo_id' => $_POST['metodo_costeo_id'],
-                'stock' => $_POST['stock']
-            ];
+            try {
+                $data = [
+                    'nombre_producto' => $_POST['nombre_producto'],
+                    'descripcion' => $_POST['descripcion'],
+                    'precio' => $_POST['precio'],
+                    'iva' => $_POST['iva'],
+                    'unidad_medida_id' => $_POST['unidad_medida_id'],
+                    'unidad_peso' => $_POST['unidad_peso'],
+                    'metodo_costeo_id' => $_POST['metodo_costeo_id'],
+                    'stock' => $_POST['stock'],
+                    'descuento' => isset($_POST['descuento']) ? $_POST['descuento'] : 0
+                ];
 
-            if ($this->model->create($data)) {
-                header('Location: /Cotizaciones/app/views/productos/productos_editar.php?success=1');
-                exit;
+                if ($this->model->create($data)) {
+                    header('Location: /Cotizaciones/app/views/productos/productos_editar.php?success=1');
+                    exit;
+                }
+            } catch (Exception $e) {
+                error_log("Error al crear producto: " . $e->getMessage());
             }
         }
         header('Location: /Cotizaciones/app/views/productos/productos_editar.php?error=1');
@@ -45,7 +56,8 @@ class ProductosController {
                 'unidad_medida_id' => $_POST['unidad_medida_id'],
                 'unidad_peso' => $_POST['unidad_peso'],
                 'metodo_costeo_id' => $_POST['metodo_costeo_id'],
-                'stock' => $_POST['stock']
+                'stock' => $_POST['stock'],
+                'descuento' => isset($_POST['descuento']) ? $_POST['descuento'] : 0
             ];
 
             if ($this->model->update($data)) {
