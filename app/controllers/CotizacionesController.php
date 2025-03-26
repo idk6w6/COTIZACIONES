@@ -17,7 +17,6 @@ class CotizacionesController {
 
     public function index() {
         try {
-            // Get cliente_id first
             $cliente_id = $this->getClienteIdByUsuario($_SESSION['usuario_id']);
             if (!$cliente_id) {
                 error_log("No cliente_id found for usuario_id: " . $_SESSION['usuario_id']);
@@ -81,7 +80,6 @@ class CotizacionesController {
 
             $this->conn->beginTransaction();
 
-            // Insertar cotización sin descuento
             $stmt = $this->conn->prepare("
                 INSERT INTO cotizaciones (
                     cliente_id, usuario_id, fecha_cotizacion, 
@@ -102,7 +100,6 @@ class CotizacionesController {
 
             $cotizacion_id = $stmt->fetchColumn();
 
-            // Insertar detalle
             $stmt = $this->conn->prepare("
                 INSERT INTO detalles_cotizacion (
                     cotizacion_id, producto_id, cantidad, precio,
@@ -141,7 +138,6 @@ class CotizacionesController {
     }
 }
 
-// Request handler
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     session_start();
     $controller = new CotizacionesController();
@@ -157,7 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             'total' => floatval(str_replace(['$', ','], '', $_POST['total']))
         ];
 
-        // Validate all numeric values
         foreach (['cantidad', 'precio', 'subtotal', 'iva', 'descuento', 'total'] as $field) {
             if ($datos[$field] === 0 && $field !== 'descuento') {
                 header('Location: /Cotizaciones/app/views/cotizaciones/cotizaciones_crear.php?error=' . urlencode('Los valores numéricos no pueden estar vacíos'));

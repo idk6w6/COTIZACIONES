@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 session_start();
 
-// Habilitar logging de errores
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -36,11 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         echo json_encode(['success' => true]);
-        
+
     } catch (Exception $e) {
         error_log('Error en actualizar_usuario.php: ' . $e->getMessage());
         echo json_encode([
-            'success' => false, 
+            'success' => false,
             'message' => 'Error al actualizar el usuario: ' . $e->getMessage()
         ]);
     }

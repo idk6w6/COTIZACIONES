@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../controllers/ClientesController.php';
-// Remove session_start() since it's already started in admin_header.php
 $controller = new ClientesController();
 $resultado = $controller->manejarVistaEdicion();
 $clientes = $resultado['clientes'];
@@ -103,7 +102,6 @@ $cliente = $resultado['cliente'];
                         <button type="submit" class="btn btn-primary">Actualizar</button>
                     </form>
                 <?php else: ?>
-                    <!-- Eliminar el mensaje aquí ya que se mostrará en la sección de resultados -->
                 <?php endif; ?>
                 <div class="search-results mt-4">
                     <?php if (isset($_GET['search']) && empty($clientes)): ?>
@@ -204,7 +202,6 @@ $cliente = $resultado['cliente'];
         return false;
     }
 
-    // Modificar los enlaces de eliminación para usar la función
     document.addEventListener('DOMContentLoaded', function() {
         const deleteLinks = document.querySelectorAll('a[href*="action=delete"]');
         deleteLinks.forEach(link => {

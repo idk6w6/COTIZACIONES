@@ -27,14 +27,12 @@ class AuthUsers {
         try {
             $this->conn->beginTransaction();
 
-            // Verificar si el correo ya existe
             $stmt = $this->conn->prepare("SELECT id FROM usuarios WHERE correo = ?");
             $stmt->execute([$correo]);
             if ($stmt->fetch()) {
                 throw new Exception('El correo ya está registrado');
             }
 
-            // Crear el usuario
             $hashed_password = password_hash($contrasena, PASSWORD_BCRYPT);
             $stmt = $this->conn->prepare("
                 INSERT INTO usuarios (nombre_usuario, correo, contrasena)
@@ -43,7 +41,6 @@ class AuthUsers {
             $stmt->execute([$nombre_usuario, $correo, $hashed_password]);
             $usuario_id = $stmt->fetchColumn();
 
-            // Obtener el rol_id para Cliente
             $stmt = $this->conn->prepare("SELECT id FROM roles WHERE LOWER(tipo) = LOWER('Cliente')");
             $stmt->execute();
             $rol = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -52,14 +49,12 @@ class AuthUsers {
                 throw new Exception('Rol Cliente no encontrado');
             }
 
-            // Asignar rol de cliente
             $stmt = $this->conn->prepare("
                 INSERT INTO usuarios_roles (usuario_id, rol_id)
                 VALUES (?, ?)
             ");
             $stmt->execute([$usuario_id, $rol['id']]);
 
-            // Crear registro en la tabla clientes
             $stmt = $this->conn->prepare("
                 INSERT INTO clientes (nombre, correo, usuario_id)
                 VALUES (?, ?, ?)
@@ -68,7 +63,6 @@ class AuthUsers {
 
             $this->conn->commit();
             
-            // Start session and set data
             session_start();
             $_SESSION['usuario_id'] = $usuario_id;
             $_SESSION['nombre_usuario'] = $nombre_usuario;

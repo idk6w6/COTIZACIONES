@@ -6,12 +6,13 @@ function createAdminUser() {
     $conn = $db->connect();
 
     try {
-        // First, create the admin role
+        //crear el rol de administrador
+
         $conn->query("INSERT INTO roles (tipo) VALUES ('admin') ON CONFLICT (tipo) DO NOTHING");
         $stmt = $conn->query("SELECT id FROM roles WHERE tipo = 'admin'");
         $roleId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
-        // Create admin user with direct password for testing
+        // usuario administrador con contraseña directa para pruebas
         $sql = "INSERT INTO usuarios (nombre_usuario, correo, contrasena) 
                 VALUES ('Admin', 'admin@example.com', 'admin') 
                 ON CONFLICT (correo) DO UPDATE 
@@ -23,7 +24,7 @@ function createAdminUser() {
         $stmt->execute();
         $userId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
-        // Link user with admin role
+        // Vincular usuario con rol de administrador
         $sql = "INSERT INTO usuarios_roles (usuario_id, rol_id) 
                 VALUES (:usuario_id, :rol_id) 
                 ON CONFLICT (usuario_id, rol_id) DO NOTHING";

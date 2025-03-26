@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Agregar event listeners para campos que afectan los cálculos
+    // event listeners para campos que afectan los cálculos
     ['cantidad', 'descuento'].forEach(field => {
         campos[field].addEventListener('input', calcularTotales);
     });
@@ -102,12 +102,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        // Update hidden fields
+        // Actualizar campos ocultos
+
         document.getElementById('subtotal_hidden').value = campos.subtotal.value;
         document.getElementById('montoIva_hidden').value = campos.montoIva.value;
         document.getElementById('montoDescuento_hidden').value = campos.montoDescuento.value;
 
-        // Submit form
+        // Enviar formulario
+
         form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
         form.submit();
     });
@@ -122,24 +124,24 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get numeric values
+            // Obtener valores numéricos
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const montoIva = parseFloat(document.getElementById('montoIva').value) || 0;
             const montoDescuento = parseFloat(document.getElementById('montoDescuento').value) || 0;
             const total = parseFloat(document.getElementById('total').value) || 0;
             
-            // Validate values
+            // Validar valores
             if (subtotal <= 0 || montoIva < 0 || total <= 0) {
                 alert('Por favor verifique los montos. Deben ser valores numéricos válidos.');
                 return false;
             }
             
-            // Update hidden fields with numeric values
-            document.getElementById('subtotal_hidden').value = subtotal.toFixed(2);
+            // Actualizar campos ocultos con valores numéricos
+       document.getElementById('subtotal_hidden').value = subtotal.toFixed(2);
             document.getElementById('montoIva_hidden').value = montoIva.toFixed(2);
             document.getElementById('montoDescuento_hidden').value = montoDescuento.toFixed(2);
             
-            // Set the form action and submit
+            // Establecer la acción del formulario y enviarlo
             form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
             form.submit();
         });

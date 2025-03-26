@@ -5,7 +5,7 @@ class Database {
     private $db = "gestor_cotizacion";
     private $user = "postgres";
     private $pass = "Luh1234567";
-    private $port = "5432"; // Add PostgreSQL port
+    private $port = "5432";  
     private $conn = null;
 
 

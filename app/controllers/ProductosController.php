@@ -118,7 +118,6 @@ class ProductosController {
     }
 }
 
-// Handle GET and POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'get') {
     $controller = new ProductosController();
     $controller->get($_GET['id']);

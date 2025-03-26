@@ -7,7 +7,6 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestor de Cotizaciones</title>
-    <!-- CSS Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -52,7 +51,6 @@ session_start();
         </div>
     </header>
     <main class="landing-main">
-        <!-- Hero Section -->
         <section class="hero-section section-container">
             <div class="container-fluid px-4 px-md-5">
                 <div class="row align-items-center g-5">
@@ -74,7 +72,6 @@ session_start();
             </div>
         </section>
 
-        <!-- Features Section -->
         <section id="features" class="features-section section-container">
             <div class="container px-4 px-md-5">
                 <h2 class="section-title text-center display-5 mb-5" data-aos="fade-up">Características Principales</h2>
@@ -104,7 +101,6 @@ session_start();
             </div>
         </section>
 
-        <!-- Carousel Section -->
         <section class="carousel-section section-container">
             <div class="container px-4 px-md-5">
                 <h2 class="section-title text-center display-5 mb-5" data-aos="fade-up">Vista Previa</h2>
@@ -136,7 +132,6 @@ session_start();
             </div>
         </section>
 
-        <!-- CTA Section -->
         <section class="cta-section section-container">
             <div class="container px-4 px-md-5">
                 <div class="cta-content text-center py-5" data-aos="zoom-in">

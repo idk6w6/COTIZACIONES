@@ -11,10 +11,9 @@ class Usuario {
 
     public function validarLogin($correo, $contrasena) {
         try {
-            // Caso especial para admin
             if ($correo === 'admin@example.com' && $contrasena === 'admin') {
                 return [
-                    'id' => 1, // O el ID que corresponda a tu admin
+                    'id' => 1,
                     'nombre_usuario' => 'Administrador',
                     'correo' => 'admin@example.com',
                     'rol' => 'Administrador'

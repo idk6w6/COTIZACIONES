@@ -168,7 +168,6 @@ class ClientesController {
             ]
         ];
 
-        // Fill with session data if available
         if (isset($_SESSION['nombre_usuario'])) {
             $resultado['formData']['nombre'] = $_SESSION['nombre_usuario'];
         }
@@ -176,7 +175,6 @@ class ClientesController {
             $resultado['formData']['correo'] = $_SESSION['correo'];
         }
 
-        // Handle POST request
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['nombre'] = $resultado['formData']['nombre'];
             $_POST['correo'] = $resultado['formData']['correo'];
@@ -184,7 +182,6 @@ class ClientesController {
             
             $resultado['resultado'] = $this->crear();
             
-            // Update formData with POST values if there was an error
             if (!isset($resultado['resultado']['success'])) {
                 $resultado['formData'] = array_merge($resultado['formData'], $_POST);
             }

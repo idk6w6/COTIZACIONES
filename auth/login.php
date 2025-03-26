@@ -3,7 +3,7 @@ require_once '../app/models/usuario.php';
 session_start();
 
 if (isset($_SESSION['usuario_id'])) {
-    if ($_SESSION['rol'] === 'Administrador') {  // Cambiar aquí
+    if ($_SESSION['rol'] === 'Administrador') { 
         header('Location: ../app/views/admin/dashboard.php');
         exit();
     }
@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['correo'] = $result['correo'];
             $_SESSION['rol'] = $result['rol'];
 
-            // Redirigir basado en el rol
             if ($result['rol'] === 'Administrador') {
                 header('Location: ../app/views/admin/dashboard.php');
                 exit();

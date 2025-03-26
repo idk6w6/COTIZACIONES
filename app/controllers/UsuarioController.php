@@ -11,7 +11,7 @@ class UsuarioController {
     }
 
     public function login($correo, $contrasena) {
-        global $pdo;  // Use the global $pdo variable
+        global $pdo; 
 
         $query = $pdo->prepare("SELECT u.id, u.nombre_usuario, u.correo, r.tipo AS rol, u.contrasena
                                FROM usuarios u
@@ -30,7 +30,7 @@ class UsuarioController {
             $_SESSION['nombre_usuario'] = $usuario['nombre_usuario'];
             $_SESSION['rol'] = $usuario['rol'];
 
-            if ($usuario['rol'] === 'Administrador') {  // Cambiar aquí
+            if ($usuario['rol'] === 'Administrador') { 
                 header('Location: /Cotizaciones/app/views/admin/dashboard.php');
                 exit;
             } else {
@@ -38,7 +38,7 @@ class UsuarioController {
                 exit;
             }
         } else {
-            header('Location: /Cotizaciones/app/views/login.php?error=1');  // Redirigir al login si no se verifica
+            header('Location: /Cotizaciones/app/views/login.php?error=1'); 
             exit;
         }
     }
@@ -47,7 +47,6 @@ class UsuarioController {
         try {
             $this->conn->beginTransaction();
 
-            // Verificar si el correo existe
             $query = $this->conn->prepare("SELECT id FROM usuarios WHERE correo = :correo");
             $query->execute(['correo' => $correo]);
 
@@ -55,7 +54,6 @@ class UsuarioController {
                 throw new Exception('El correo electrónico ya está registrado.');
             }
 
-            // Crear usuario
             $hashed_password = password_hash($contrasena, PASSWORD_BCRYPT);
             $query = $this->conn->prepare("
                 INSERT INTO usuarios (nombre_usuario, correo, contrasena) 
@@ -70,7 +68,6 @@ class UsuarioController {
             
             $usuario_id = $query->fetchColumn();
 
-            // Obtener el ID del rol Cliente
             $query = $this->conn->prepare("
                 SELECT id FROM roles WHERE tipo = 'Cliente'
             ");
@@ -81,7 +78,6 @@ class UsuarioController {
                 throw new Exception('Rol Cliente no encontrado');
             }
 
-            // Asignar rol de cliente
             $query = $this->conn->prepare("
                 INSERT INTO usuarios_roles (usuario_id, rol_id) 
                 VALUES (:usuario_id, :rol_id)
@@ -91,7 +87,6 @@ class UsuarioController {
                 'rol_id' => $rol_id
             ]);
 
-            // Crear registro de cliente
             $query = $this->conn->prepare("
                 INSERT INTO clientes (nombre, correo, usuario_id) 
                 VALUES (:nombre, :correo, :usuario_id)
@@ -147,7 +142,6 @@ class UsuarioController {
 
     public function actualizarUsuario($id, $datos) {
         try {
-            // Verificar si el correo ya existe para otro usuario
             $stmt = $this->conn->prepare("
                 SELECT id FROM usuarios 
                 WHERE correo = :correo AND id != :id
@@ -163,7 +157,6 @@ class UsuarioController {
 
             $this->conn->beginTransaction();
 
-            // Actualizar datos del usuario
             $stmt = $this->conn->prepare("
                 UPDATE usuarios 
                 SET nombre_usuario = :nombre_usuario,
@@ -181,7 +174,6 @@ class UsuarioController {
                 throw new Exception("Error actualizando usuario");
             }
 
-            // Obtener el rol_id correcto
             $stmt = $this->conn->prepare("
                 SELECT id FROM roles WHERE LOWER(tipo) = LOWER(:rol)
             ");
@@ -192,7 +184,6 @@ class UsuarioController {
                 throw new Exception("Rol '{$datos['rol']}' no encontrado en la base de datos");
             }
 
-            // Eliminar rol existente y agregar el nuevo
             $stmt = $this->conn->prepare("
                 DELETE FROM usuarios_roles WHERE usuario_id = :usuario_id
             ");
@@ -212,9 +203,7 @@ class UsuarioController {
                 throw new Exception("Error actualizando rol");
             }
 
-            // Si el rol es 'Cliente', manejar registro en tabla clientes
             if (strtolower($datos['rol']) === 'cliente') {
-                // Verificar si ya existe el cliente
                 $stmt = $this->conn->prepare("
                     SELECT id FROM clientes WHERE usuario_id = :usuario_id
                 ");
@@ -222,7 +211,6 @@ class UsuarioController {
                 $clienteExiste = $stmt->fetch();
 
                 if (!$clienteExiste) {
-                    // Si no existe, crear nuevo cliente
                     $stmt = $this->conn->prepare("
                         INSERT INTO clientes (nombre, correo, usuario_id)
                         VALUES (:nombre, :correo, :usuario_id)
@@ -233,7 +221,6 @@ class UsuarioController {
                         ':usuario_id' => $id
                     ]);
                 } else {
-                    // Si existe, actualizar datos del cliente
                     $stmt = $this->conn->prepare("
                         UPDATE clientes 
                         SET nombre = :nombre,
@@ -264,7 +251,6 @@ class UsuarioController {
         try {
             $this->conn->beginTransaction();
             
-            // 1. Eliminar registros en detalles_cotizacion relacionados con las cotizaciones del cliente
             $stmt = $this->conn->prepare("
                 DELETE FROM detalles_cotizacion 
                 WHERE cotizacion_id IN (
@@ -276,7 +262,6 @@ class UsuarioController {
             ");
             $stmt->execute(['id' => $id]);
             
-            // 2. Eliminar cotizaciones relacionadas con el cliente
             $stmt = $this->conn->prepare("
                 DELETE FROM cotizaciones 
                 WHERE cliente_id IN (
@@ -285,15 +270,12 @@ class UsuarioController {
             ");
             $stmt->execute(['id' => $id]);
             
-            // 3. Eliminar el registro del cliente
             $stmt = $this->conn->prepare("DELETE FROM clientes WHERE usuario_id = :id");
             $stmt->execute(['id' => $id]);
             
-            // 4. Eliminar roles del usuario
             $stmt = $this->conn->prepare("DELETE FROM usuarios_roles WHERE usuario_id = :id");
             $stmt->execute(['id' => $id]);
             
-            // 5. Finalmente eliminar el usuario
             $stmt = $this->conn->prepare("DELETE FROM usuarios WHERE id = :id");
             $stmt->execute(['id' => $id]);
             

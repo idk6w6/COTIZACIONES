@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Check if user is logged in
 if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
     header('Location: /Cotizaciones/auth/login.php');
     exit;
@@ -18,7 +17,6 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/Cotizaciones/public/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="header-import">
@@ -26,7 +24,6 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <h1><a class="title_gestor" href="/Cotizaciones/app/views/usuario/dashboard.php">Gestor de Cotizaciones</a></h1>
-
                     <div class="user-info">
                         <span>Cliente: <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?></span>
                         <a href="/Cotizaciones/auth/logout.php" class="btn btn-outline-light btn-sm ms-2">
@@ -73,5 +70,6 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
             </div>
         </header>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

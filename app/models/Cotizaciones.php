@@ -13,7 +13,6 @@ class Cotizaciones {
         try {
             $this->conn->beginTransaction();
 
-            // Insert cotización
             $stmt = $this->conn->prepare(
                 "INSERT INTO cotizaciones (
                     cliente_id, usuario_id, fecha_cotizacion, 
@@ -35,7 +34,6 @@ class Cotizaciones {
 
             $cotizacion_id = $stmt->fetchColumn();
 
-            // Insert detalle_cotizacion
             $stmt = $this->conn->prepare(
                 "INSERT INTO detalles_cotizacion (
                     cotizacion_id, producto_id, cantidad, precio,

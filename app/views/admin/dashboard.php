@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../../controllers/UsuarioController.php';
 include '../../../layout/admin_header.php';
 
-// Verificar rol después de incluir el header
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'Administrador') {
     header('Location: /Cotizaciones/auth/login.php?error=unauthorized');
     exit();
@@ -86,7 +85,6 @@ $usuarios = $usuarioController->obtenerTodosUsuarios();
     </div>
 </div>
 
-<!-- Modal de Edición -->
 <div class="modal fade" id="editarUsuarioModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -180,7 +178,6 @@ function actualizarUsuario() {
     });
 }
 
-// Modificar el botón de editar en la tabla
 document.querySelectorAll('a[href^="editar_usuario.php"]').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();

@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../../../layout/user_header.php');
 $controller = new ProductosController();
 $productos = $controller->index();
 $unidades_medida = $controller->getUnidadesMedida();
-$metodos_costeo = $controller->getMetodosCosteo(); // Add this line
+$metodos_costeo = $controller->getMetodosCosteo(); 
 ?>
 
 <div class="container productos_crear mt-4">
@@ -14,7 +14,7 @@ $metodos_costeo = $controller->getMetodosCosteo(); // Add this line
             <h2>Catálogo de Productos</h2>
             <div class="card">
                 <div class="card-body">
-                    <!-- Updated search form design -->
+                   
                     <div class="row mb-4">
                         <div class="col-md-8 mx-auto">
                             <form method="GET" action="" class="search-form">

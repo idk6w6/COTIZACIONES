@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Solo verificar autenticación si no estamos en páginas de auth
 $current_path = $_SERVER['PHP_SELF'];
 if (!str_contains($current_path, '/auth/') && !isset($_SESSION['usuario_id'])) {
     header('Location: /Cotizaciones/auth/login.php');

@@ -8,11 +8,9 @@ class ReportesController {
         $conexion = new Conexion();
         $db = $conexion->getConexion();
 
-        // Aquí puedes agregar la lógica para generar el reporte
         $query = $db->query("SELECT * FROM cotizaciones");
         $cotizaciones = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        // Puedes devolver los datos del reporte a una vista o exportarlos a un archivo
         return $cotizaciones;
     }
 }

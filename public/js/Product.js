@@ -1,4 +1,4 @@
-// Client-side validation and functionality
+// Validación y funcionalidad del lado del cliente
 document.addEventListener('DOMContentLoaded', function() {
     const productoForm = document.getElementById('productoForm');
     if (productoForm) {
@@ -19,7 +19,7 @@ function validateForm(e) {
         return false;
     }
 
-    // Validar tasas de IVA mexicanas
+    // Validar tasas de IVA mexicano
     const tasasValidas = [0, 8, 16];
     if (!tasasValidas.includes(iva)) {
         e.preventDefault();
@@ -54,7 +54,7 @@ function editarProducto(id) {
                 return;
             }
             
-            // Fill form with product data
+            // Llenar formulario con datos del producto
             document.getElementById('nombre_producto').value = data.nombre_producto || '';
             document.getElementById('descripcion').value = data.descripcion || '';
             document.getElementById('precio').value = data.precio || '';
@@ -63,27 +63,27 @@ function editarProducto(id) {
             document.getElementById('unidad_peso').value = data.unidad_peso || '';
             document.getElementById('metodo_costeo_id').value = data.metodo_costeo_id || '';
             
-            // Change form action to update
+            // Cambiar la acción del formulario a actualizar
             const form = document.getElementById('productoForm');
             form.querySelector('input[name="action"]').value = 'update';
             
-            // Remove existing hidden id input if any
+            // Eliminar entrada oculta de id existente si hay alguna
             const existingId = form.querySelector('input[name="id"]');
             if (existingId) {
                 existingId.remove();
             }
             
-            // Add hidden input for product id
+            // Agregar entrada oculta para el id del producto
             const hiddenId = document.createElement('input');
             hiddenId.type = 'hidden';
             hiddenId.name = 'id';
             hiddenId.value = id;
             form.appendChild(hiddenId);
 
-            // Change button text
+            // Cambiar el texto del botón
             form.querySelector('button[type="submit"]').textContent = 'Actualizar Producto';
             
-            // Scroll to form
+            // Desplazarse al formulario
             form.scrollIntoView({ behavior: 'smooth' });
         })
         .catch(error => {

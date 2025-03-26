@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../../config/db.php');
 
 class Productos {
-    public $conn; // Change to public so controller can access it
+    public $conn;
 
     public function __construct() {
         $database = new Database();
@@ -26,7 +26,6 @@ class Productos {
     }
 
     public function create($data) {
-        // Validar valores no negativos y límites máximos
         if ($data['precio'] < 0 || $data['precio'] > 99999.99) {
             throw new Exception('El precio debe estar entre 0 y 99,999.99');
         }
@@ -37,7 +36,6 @@ class Productos {
             throw new Exception('El stock debe estar entre 0 y 9,999 unidades');
         }
 
-        // Validar tasa de IVA mexicana
         $tasasValidas = [0, 8, 16];
         if (!in_array((float)$data['iva'], $tasasValidas)) {
             throw new Exception('Tasa de IVA no válida para México');
@@ -58,7 +56,6 @@ class Productos {
     }
 
     public function update($data) {
-        // Validar valores no negativos y límites máximos
         if ($data['precio'] < 0 || $data['precio'] > 99999.99) {
             throw new Exception('El precio debe estar entre 0 y 99,999.99');
         }
@@ -69,7 +66,6 @@ class Productos {
             throw new Exception('El stock debe estar entre 0 y 9,999 unidades');
         }
 
-        // Validar tasa de IVA mexicana
         $tasasValidas = [0, 8, 16];
         if (!in_array((float)$data['iva'], $tasasValidas)) {
             throw new Exception('Tasa de IVA no válida para México');
@@ -95,7 +91,6 @@ class Productos {
         try {
             $this->conn->beginTransaction();
             
-            // 1. Verificar si el producto está en detalles_cotizacion
             $checkCotizacionQuery = "SELECT COUNT(*) FROM detalles_cotizacion WHERE producto_id = :id";
             $checkStmt = $this->conn->prepare($checkCotizacionQuery);
             $checkStmt->execute(['id' => $id]);
@@ -104,13 +99,11 @@ class Productos {
                 throw new Exception("No se puede eliminar el producto porque está siendo usado en cotizaciones existentes");
             }
 
-            // 2. Obtener los IDs relacionados para restaurarlos después
             $getIdsQuery = "SELECT metodo_costeo_id, unidad_medida_id FROM productos WHERE id = :id";
             $getIdsStmt = $this->conn->prepare($getIdsQuery);
             $getIdsStmt->execute(['id' => $id]);
             $ids = $getIdsStmt->fetch(PDO::FETCH_ASSOC);
 
-            // 3. Eliminar temporalmente las referencias
             $updateQuery = "UPDATE productos SET 
                           metodo_costeo_id = NULL,
                           unidad_medida_id = NULL 
@@ -118,12 +111,10 @@ class Productos {
             $updateStmt = $this->conn->prepare($updateQuery);
             $updateStmt->execute(['id' => $id]);
 
-            // 4. Eliminar el producto
             $deleteQuery = "DELETE FROM productos WHERE id = :id";
             $deleteStmt = $this->conn->prepare($deleteQuery);
             $result = $deleteStmt->execute(['id' => $id]);
 
-            // 5. Restaurar los registros en metodos_costeo y unidades_medida si existen
             if ($ids['metodo_costeo_id']) {
                 $this->conn->exec("UPDATE metodos_costeo SET descripcion = descripcion WHERE id = " . $ids['metodo_costeo_id']);
             }

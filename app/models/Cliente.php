@@ -24,7 +24,7 @@ class Cliente {
     }
 
     public function obtenerTodos() {
-        $sql = "SELECT * FROM clientes ORDER BY nombre";  // Changed to order by name
+        $sql = "SELECT * FROM clientes ORDER BY nombre"; 
         try {
             $stmt = $this->conn->query($sql);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -62,7 +62,6 @@ class Cliente {
 
     public function actualizar($datos) {
         try {
-            // Primero verificar si existe el registro de cliente
             $stmt = $this->conn->prepare("
                 SELECT id FROM clientes WHERE usuario_id = :usuario_id
             ");
@@ -70,13 +69,11 @@ class Cliente {
             $existe = $stmt->fetch();
 
             if (!$existe) {
-                // Si no existe, crear nuevo registro
                 $stmt = $this->conn->prepare("
                     INSERT INTO clientes (nombre, celular1, tel_oficina, correo, direccion, usuario_id)
                     VALUES (:nombre, :celular1, :tel_oficina, :correo, :direccion, :usuario_id)
                 ");
             } else {
-                // Si existe, actualizar
                 $stmt = $this->conn->prepare("
                     UPDATE clientes 
                     SET nombre = :nombre,
@@ -88,7 +85,6 @@ class Cliente {
                 ");
             }
             
-            // También actualizar la tabla usuarios para mantener sincronizado
             $stmt2 = $this->conn->prepare("
                 UPDATE usuarios 
                 SET nombre_usuario = :nombre
@@ -127,14 +123,12 @@ class Cliente {
         try {
             $this->conn->beginTransaction();
             
-            // Primero verificar si existen cotizaciones relacionadas
             $stmt = $this->conn->prepare("
                 SELECT id FROM cotizaciones WHERE cliente_id = ?
             ");
             $stmt->execute([$id]);
             $cotizaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Si hay cotizaciones, eliminar sus detalles primero
             if (!empty($cotizaciones)) {
                 foreach ($cotizaciones as $cotizacion) {
                     $stmt = $this->conn->prepare("
@@ -144,7 +138,6 @@ class Cliente {
                     $stmt->execute([$cotizacion['id']]);
                 }
 
-                // Luego eliminar las cotizaciones
                 $stmt = $this->conn->prepare("
                     DELETE FROM cotizaciones 
                     WHERE cliente_id = ?
@@ -152,7 +145,6 @@ class Cliente {
                 $stmt->execute([$id]);
             }
             
-            // Finalmente eliminar el cliente
             $stmt = $this->conn->prepare("
                 DELETE FROM clientes 
                 WHERE id = ?
@@ -210,7 +202,6 @@ class Cliente {
             $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($cliente) {
-                // Log para debug
                 error_log("Datos del cliente encontrados: " . print_r($cliente, true));
                 return $cliente;
             }

@@ -13,14 +13,12 @@ class Cotizacion {
         try {
             $this->conn->beginTransaction();
 
-            // Verify cliente_id exists
             $stmt = $this->conn->prepare("SELECT id FROM clientes WHERE id = :cliente_id");
             $stmt->execute([':cliente_id' => $datos['cliente_id']]);
             if (!$stmt->fetch()) {
                 throw new Exception('Cliente no encontrado');
             }
 
-            // Insertar la cotización principal
             $stmt = $this->conn->prepare("
                 INSERT INTO cotizaciones (
                     cliente_id, 
@@ -52,7 +50,6 @@ class Cotizacion {
 
             $cotizacion_id = $stmt->fetchColumn();
 
-            // Insertar el detalle de la cotización
             $stmt = $this->conn->prepare("
                 INSERT INTO detalles_cotizacion (
                     cotizacion_id, 

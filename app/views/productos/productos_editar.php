@@ -49,7 +49,6 @@ $productos = $controller->index();
                         </div>
                     </div>
 
-                    <!-- Nuevo campo de descuento -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -103,7 +102,6 @@ $productos = $controller->index();
                 </form>
             </div>
 
-            <!-- Table of Products -->
             <div class="card mt-4">
                 <div class="card-header">
                     <h3>Listado de Productos</h3>

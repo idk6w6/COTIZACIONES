@@ -10,7 +10,6 @@ if ($producto_id) {
     $producto = $controller->obtenerProducto($producto_id);
 }
 
-// Get success/error messages
 $success = isset($_GET['success']) ? true : false;
 $error = isset($_GET['error']) ? $_GET['error'] : null;
 ?>
@@ -29,7 +28,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
     <?php endif; ?>
 
     <?php if (!$producto_id): ?>
-    <!-- Vista de listado de cotizaciones -->
     <div class="row">
         <div class="col-12">
             <div class="card shadow">
@@ -93,7 +91,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
         </div>
     </div>
     <?php else: ?>
-    <!-- Formulario de creación de cotización -->
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow">
@@ -107,7 +104,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                         <input type="hidden" name="subtotal" id="subtotal_hidden">
                         <input type="hidden" name="montoIva" id="montoIva_hidden">
                         
-                        <!-- Información del Cliente -->
                         <div class="mb-4">
                             <h4 class="border-bottom pb-2">Información del Cliente</h4>
                             <div class="mb-3">
@@ -117,7 +113,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                             </div>
                         </div>
 
-                        <!-- Información del Producto -->
                         <div class="mb-4">
                             <h4 class="border-bottom pb-2">Detalles del Producto</h4>
                             <div class="mb-3">
@@ -153,7 +148,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                             </div>
                         </div>
 
-                        <!-- Totales -->
                         <div class="mb-4">
                             <h4 class="border-bottom pb-2">Totales</h4>
                             <div class="row">
@@ -204,11 +198,9 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Update hidden fields before submit
             document.getElementById('subtotal_hidden').value = document.getElementById('subtotal').value;
             document.getElementById('montoIva_hidden').value = document.getElementById('montoIva').value;
             
-            // Set the form action and submit
             form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
             form.submit();
         });
