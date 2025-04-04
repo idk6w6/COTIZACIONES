@@ -64,8 +64,8 @@ if (!str_contains($current_path, '/auth/') && !isset($_SESSION['usuario_id'])) {
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/Cotizaciones/#reportes">
-                                    <i class="fas fa-chart-bar"></i> Listado de Cotizaciones
+                                <a class="nav-link" href="/Cotizaciones/app/views/reportes/reportes_listado.php">
+                                    <i class="fas fa-chart-bar"></i> Reportes de Cotizaciones
                                 </a>
                             </li>
                         </ul>
