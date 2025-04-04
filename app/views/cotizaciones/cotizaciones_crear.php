@@ -103,6 +103,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                         <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($producto_id); ?>">
                         <input type="hidden" name="subtotal" id="subtotal_hidden">
                         <input type="hidden" name="montoIva" id="montoIva_hidden">
+                        <input type="hidden" name="total_hidden" id="total_hidden">
                         
                         <div class="mb-4">
                             <h4 class="border-bottom pb-2">Información del Cliente</h4>
@@ -135,7 +136,9 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                                 <div class="col-md-6 mb-3">
                                     <label for="cantidad" class="form-label">Cantidad*</label>
                                     <input type="number" class="form-control" id="cantidad" name="cantidad" 
-                                           value="1" min="1" max="<?php echo $producto['stock']; ?>" required>
+                                           value="1" min="1" max="<?php echo $producto['stock']; ?>" 
+                                           required onchange="actualizarCantidadMax(<?php echo $producto_id; ?>)">
+                                    <small class="text-muted">Stock disponible: <?php echo $producto['stock']; ?></small>
                                 </div>
                             </div>
 
@@ -195,12 +198,16 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('cotizacionForm');
     if (form) {
+        // Inicializar cálculos cuando carga la página
+        inicializarCalculos();
+
+        // Manejar cambios en la cantidad
+        document.getElementById('cantidad').addEventListener('input', function() {
+            actualizarCantidadMax(<?php echo $producto_id; ?>);
+        });
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            document.getElementById('subtotal_hidden').value = document.getElementById('subtotal').value;
-            document.getElementById('montoIva_hidden').value = document.getElementById('montoIva').value;
-            
             form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
             form.submit();
         });
@@ -209,4 +216,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script src="/Cotizaciones/public/js/Cotizacion.js"></script>
+<script src="/Cotizaciones/public/js/cotizaciones.js"></script>
 

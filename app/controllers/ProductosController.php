@@ -9,13 +9,20 @@ class ProductosController {
     }
 
     public function index() {
-        if (isset($_GET['search'])) {
-            $searchTerm = trim($_GET['search']);
-            if (!empty($searchTerm)) {
-                return $this->model->search($searchTerm);
+        try {
+            if (isset($_GET['search'])) {
+                $searchTerm = trim($_GET['search']);
+                if (!empty($searchTerm)) {
+                    return $this->model->search($searchTerm);
+                }
             }
+            $productos = $this->model->getAll();
+            error_log("Controlador: Productos recuperados: " . count($productos)); // Debug
+            return $productos;
+        } catch (Exception $e) {
+            error_log("Error en ProductosController->index: " . $e->getMessage());
+            return [];
         }
-        return $this->model->getAll();
     }
 
     public function store() {
@@ -98,13 +105,20 @@ class ProductosController {
 
     public function get($id) {
         try {
-            $query = "SELECT * FROM productos WHERE id = :id";
+            $query = "SELECT p.*, 
+                     mc.descripcion as metodo_costeo,
+                     (SELECT AVG(precio) FROM productos 
+                      WHERE metodo_costeo_id = p.metodo_costeo_id) as precio_promedio
+                     FROM productos p 
+                     JOIN metodos_costeo mc ON p.metodo_costeo_id = mc.id
+                     WHERE p.id = :id";
             $stmt = $this->model->conn->prepare($query);
             $stmt->execute(['id' => $id]);
             $producto = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            header('Content-Type: application/json');
             if ($producto) {
+                // Ajustar precio según método de costeo
+                $producto['precio'] = $this->ajustarPrecioPorMetodoCosteo($producto);
                 echo json_encode($producto);
             } else {
                 echo json_encode(['error' => 'Producto no encontrado']);
@@ -114,6 +128,19 @@ class ProductosController {
             header('Content-Type: application/json');
             echo json_encode(['error' => $e->getMessage()]);
             exit;
+        }
+    }
+
+    private function ajustarPrecioPorMetodoCosteo($producto) {
+        // Ya no aplicamos ajustes adicionales al precio base
+        switch($producto['metodo_costeo']) {
+            case 'PEPS - Primeras Entradas, Primeras Salidas':
+            case 'Promedio Ponderado':
+            case 'Costo Identificado':
+            case 'Costo Estándar':
+                return $producto['precio']; // Devolvemos el precio sin modificar
+            default:
+                return $producto['precio'];
         }
     }
 }

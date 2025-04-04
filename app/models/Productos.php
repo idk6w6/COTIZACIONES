@@ -5,22 +5,25 @@ class Productos {
     public $conn;
 
     public function __construct() {
-        $database = new Database();
-        $this->conn = $database->connect();
+        $db = new Database();
+        $this->conn = $db->connect();
     }
 
     public function getAll() {
         try {
-            $query = "SELECT id, nombre_producto, descripcion, precio, iva, 
-                             unidad_medida_id, unidad_peso, metodo_costeo_id, 
-                             stock, descuento 
-                      FROM productos 
-                      ORDER BY id DESC";
-            $stmt = $this->conn->prepare($query);
+            $stmt = $this->conn->prepare("
+                SELECT p.*, mc.descripcion as metodo_costeo_desc, um.descripcion as unidad_medida_desc
+                FROM productos p
+                LEFT JOIN metodos_costeo mc ON p.metodo_costeo_id = mc.id
+                LEFT JOIN unidades_medida um ON p.unidad_medida_id = um.id
+                ORDER BY p.id DESC
+            ");
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("Productos encontrados: " . count($result)); // Debug
+            return $result;
         } catch (PDOException $e) {
-            error_log("Error en getAll: " . $e->getMessage());
+            error_log("Error en Productos->getAll: " . $e->getMessage());
             return [];
         }
     }

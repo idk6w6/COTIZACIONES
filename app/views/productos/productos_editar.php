@@ -94,10 +94,53 @@ $productos = $controller->index();
                         <select class="form-control" id="metodo_costeo_id" name="metodo_costeo_id" required>
                             <option value="">Seleccione un método</option>
                             <?php foreach ($metodos_costeo as $metodo): ?>
-                                <option value="<?php echo $metodo['id']; ?>"><?php echo $metodo['descripcion']; ?></option>
+                                <option value="<?php echo $metodo['id']; ?>" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="right"
+                                        title="<?php echo obtenerDescripcionMetodoCosteo($metodo['descripcion']); ?>">
+                                    <?php echo $metodo['descripcion']; ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
+                        <small class="form-text text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            Pase el mouse sobre cada opción para ver más detalles
+                        </small>
                     </div>
+
+                    <?php
+                    function obtenerDescripcionMetodoCosteo($metodo) {
+                        $descripciones = [
+                            'PEPS - Primeras Entradas, Primeras Salidas' => 
+                                'Los primeros productos que entran al inventario son los primeros en salir.',
+                            'Promedio Ponderado' => 
+                                'Calcula un promedio del costo de todos los productos similares en inventario.',
+                            'Costo Identificado' => 
+                                'Para productos que pueden ser identificados individualmente por su costo.',
+                            'Costo Estándar' => 
+                                'Usa un costo predeterminado que se ajusta periódicamente.'
+                        ];
+                        return $descripciones[$metodo] ?? 'Método de costeo';
+                    }
+                    ?>
+
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Inicializar tooltips de Bootstrap
+                        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                            return new bootstrap.Tooltip(tooltipTriggerEl, {
+                                html: true,
+                                container: 'body'
+                            });
+                        });
+
+                        // Actualizar tooltips cuando cambie el select
+                        document.getElementById('metodo_costeo_id').addEventListener('change', function() {
+                            tooltipList.forEach(tooltip => tooltip.update());
+                        });
+                    });
+                    </script>
                     <button type="submit" class="btn btn-primary">Guardar Producto</button>
                 </form>
             </div>
@@ -107,6 +150,13 @@ $productos = $controller->index();
                     <h3>Listado de Productos</h3>
                 </div>
                 <div class="card-body">
+                    <?php 
+                    if (empty($productos)): ?>
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-box-open fa-2x mb-2"></i>
+                            <p class="mb-0">No hay productos registrados</p>
+                        </div>
+                    <?php else: ?>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -162,6 +212,7 @@ $productos = $controller->index();
                             </tbody>
                         </table>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

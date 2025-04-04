@@ -69,6 +69,15 @@ class CotizacionesController {
 
     public function crear($datos) {
         try {
+            // Validar stock disponible
+            $stmt = $this->conn->prepare("SELECT stock FROM productos WHERE id = :producto_id");
+            $stmt->execute(['producto_id' => $datos['producto_id']]);
+            $stock = $stmt->fetchColumn();
+            
+            if ($stock < $datos['cantidad']) {
+                throw new Exception('La cantidad solicitada excede el stock disponible');
+            }
+
             if (!isset($_SESSION['usuario_id'])) {
                 throw new Exception('Usuario no identificado');
             }
