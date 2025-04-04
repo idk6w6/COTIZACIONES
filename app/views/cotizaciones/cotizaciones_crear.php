@@ -61,22 +61,39 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($cotizaciones as $cotizacion): ?>
-                                <tr>
-                                    <td><?php echo date('d/m/Y', strtotime($cotizacion['fecha_cotizacion'])); ?></td>
-                                    <td><?php echo htmlspecialchars($cotizacion['nombre_producto']); ?></td>
-                                    <td><?php echo $cotizacion['cantidad']; ?></td>
-                                    <td>$<?php echo number_format($cotizacion['precio'], 2); ?></td>
-                                    <td>$<?php echo number_format($cotizacion['subtotal'], 2); ?></td>
-                                    <td>$<?php echo number_format($cotizacion['iva'], 2); ?></td>
-                                    <td>$<?php echo number_format($cotizacion['descuento'], 2); ?></td>
-                                    <td>$<?php echo number_format($cotizacion['total'], 2); ?></td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-info" title="Ver detalle">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <?php foreach ($cotizaciones as $cotizacion): 
+                                    $fecha_cotizacion = strtotime($cotizacion['fecha_cotizacion']);
+                                    $fecha_limite = strtotime('+1 day', $fecha_cotizacion);
+                                    $puede_editar = time() < $fecha_limite;
+                                ?>
+                                    <tr>
+                                        <td><?php echo date('d/m/Y', strtotime($cotizacion['fecha_cotizacion'])); ?></td>
+                                        <td><?php echo htmlspecialchars($cotizacion['nombre_producto']); ?></td>
+                                        <td><?php echo $cotizacion['cantidad']; ?></td>
+                                        <td>$<?php echo number_format($cotizacion['precio'], 2); ?></td>
+                                        <td>$<?php echo number_format($cotizacion['subtotal'], 2); ?></td>
+                                        <td>$<?php echo number_format($cotizacion['iva'], 2); ?></td>
+                                        <td>$<?php echo number_format($cotizacion['descuento'], 2); ?></td>
+                                        <td>$<?php echo number_format($cotizacion['total'], 2); ?></td>
+                                        <td>
+                                            <?php if ($puede_editar): ?>
+                                            <div class="btn-group">
+                                                <a href="cotizaciones_editar.php?id=<?php echo $cotizacion['id']; ?>" 
+                                                   class="btn btn-warning btn-sm" 
+                                                   title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button onclick="cancelarCotizacion(<?php echo $cotizacion['id']; ?>)"
+                                                        class="btn btn-danger btn-sm"
+                                                        title="Cancelar">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <?php else: ?>
+                                                <span class="badge bg-secondary">No editable</span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -152,26 +169,32 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                         </div>
 
                         <div class="mb-4">
-                            <h4 class="border-bottom pb-2">Totales</h4>
+                            <h4 class="border-bottom pb-2" style="color: #673ab7;">Totales</h4>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="subtotal" class="form-label">Subtotal</label>
+                                    <label class="form-label">Subtotal</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="subtotal" readonly>
+                                        <input type="text" class="form-control bg-light" id="subtotal" readonly>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="montoIva" class="form-label">IVA</label>
+                                    <label class="form-label">Descuento (<?php echo htmlspecialchars($producto['descuento'] ?? '0'); ?>%)</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="montoIva" readonly>
+                                        <input type="text" class="form-control bg-light" id="montoDescuento" readonly>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">IVA</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control bg-light" id="montoIva" readonly>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12 mb-3">
                                     <label for="total" class="form-label">Total*</label>
                                     <div class="input-group">
@@ -213,6 +236,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function cancelarCotizacion(id) {
+    if (confirm('¿Está seguro de que desea cancelar esta cotización?')) {
+        fetch('/Cotizaciones/app/controllers/CotizacionesController.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Agregar header para CSRF si lo tienes implementado
+            },
+            body: JSON.stringify({
+                action: 'cancelar',
+                id: id
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Cotización cancelada exitosamente');
+                location.reload();
+            } else {
+                alert(data.message || 'Error al cancelar la cotización');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al procesar la solicitud');
+        });
+    }
+}
 </script>
 
 <script src="/Cotizaciones/public/js/Cotizacion.js"></script>

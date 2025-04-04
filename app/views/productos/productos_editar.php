@@ -150,8 +150,31 @@ $productos = $controller->index();
                     <h3>Listado de Productos</h3>
                 </div>
                 <div class="card-body">
-                    <?php 
-                    if (empty($productos)): ?>
+                    <!-- Buscador mejorado -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mx-auto">
+                            <form method="GET" action="" class="search-form">
+                                <div class="input-group">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           name="search" 
+                                           placeholder="Buscar producto..." 
+                                           value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <?php if(isset($_GET['search'])): ?>
+                                        <a href="<?php echo $_SERVER['PHP_SELF']; ?>" 
+                                           class="btn btn-secondary">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <?php if (empty($productos)): ?>
                         <div class="alert alert-info text-center">
                             <i class="fas fa-box-open fa-2x mb-2"></i>
                             <p class="mb-0">No hay productos registrados</p>

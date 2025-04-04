@@ -38,15 +38,17 @@ $datos_cliente = $usuarioController->obtenerDatosDashboardCliente($_SESSION['usu
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
-                                    <tr>
+                                    <tr class="text-center">
                                         <th><i class="fas fa-user me-2"></i>Nombre</th>
+                                        <th><i class="fas fa-id-card me-2"></i>Nombre de Cliente</th>
                                         <th><i class="fas fa-map-marker-alt me-2"></i>Dirección</th>
                                         <th><i class="fas fa-calendar-alt me-2"></i>Fecha de Registro</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($datos_cliente['nombre']); ?></td>
+                                    <tr class="text-center">
+                                        <td><?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?></td>
+                                        <td><?php echo htmlspecialchars($datos_cliente['nombre_cliente']); ?></td>
                                         <td><?php echo htmlspecialchars($datos_cliente['direccion']); ?></td>
                                         <td><?php echo htmlspecialchars($datos_cliente['fecha_registro']); ?></td>
                                     </tr>

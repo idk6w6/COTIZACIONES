@@ -24,32 +24,23 @@ function calcularTotales(producto) {
     const iva = parseFloat(producto.iva) || 0;
     const descuento = parseFloat(producto.descuento) || 0;
 
-    // Ya no aplicamos ajuste de método de costeo aquí
     const subtotal = cantidad * precio;
     const montoDescuento = (subtotal * descuento) / 100;
     const baseIva = subtotal - montoDescuento;
     const montoIva = (baseIva * iva) / 100;
     const total = baseIva + montoIva;
 
-    // Actualizamos los campos en el formulario
+    // Actualizamos los campos visibles
     document.getElementById('subtotal').value = formatCurrency(subtotal);
+    document.getElementById('montoDescuento').value = formatCurrency(montoDescuento);
     document.getElementById('montoIva').value = formatCurrency(montoIva);
     document.getElementById('total').value = formatCurrency(total);
 
     // Actualizamos los campos ocultos
     document.getElementById('subtotal_hidden').value = subtotal.toFixed(2);
+    document.getElementById('montoDescuento_hidden').value = montoDescuento.toFixed(2);
     document.getElementById('montoIva_hidden').value = montoIva.toFixed(2);
     document.getElementById('total_hidden').value = total.toFixed(2);
-    
-    // Para debugging
-    console.log({
-        precio,
-        cantidad,
-        subtotal,
-        iva: `${iva}%`,
-        montoIva,
-        total
-    });
 }
 
 function formatCurrency(value) {

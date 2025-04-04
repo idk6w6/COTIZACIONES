@@ -57,7 +57,7 @@ $metodos_costeo = $controller->getMetodosCosteo();
                                         <th>Peso</th>
                                         <th>Stock</th>
                                         <th>Método de Costeo</th>
-                                        <th>Acciones</th>
+                                        <th>Cotizar Ahora</th>
                                     </tr>
                                 </thead>
                                 <tbody>

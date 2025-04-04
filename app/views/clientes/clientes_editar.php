@@ -113,7 +113,8 @@ $cliente = $resultado['cliente'];
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
+                                        <th>Nombre de Usuario</th>
+                                        <th>Nombre de Cliente</th>
                                         <th>Celular</th>
                                         <th>Tel. Oficina</th>
                                         <th>Correo</th>
@@ -125,6 +126,7 @@ $cliente = $resultado['cliente'];
                                     <?php if (isset($_GET['search']) && !empty($clientes)): ?>
                                         <?php foreach ($clientes as $cliente): ?>
                                             <tr>
+                                                <td><?php echo htmlspecialchars($cliente['nombre_usuario']); ?></td>
                                                 <td><?php echo htmlspecialchars($cliente['nombre']); ?></td>
                                                 <td><?php echo htmlspecialchars($cliente['celular1']); ?></td>
                                                 <td><?php echo htmlspecialchars($cliente['tel_oficina']); ?></td>
@@ -144,6 +146,7 @@ $cliente = $resultado['cliente'];
                                         <?php endforeach; ?>
                                     <?php elseif (isset($cliente) && $cliente): ?>
                                         <tr>
+                                            <td><?php echo htmlspecialchars($cliente['nombre_usuario']); ?></td>
                                             <td><?php echo htmlspecialchars($cliente['nombre']); ?></td>
                                             <td><?php echo htmlspecialchars($cliente['celular1']); ?></td>
                                             <td><?php echo htmlspecialchars($cliente['tel_oficina']); ?></td>
@@ -162,7 +165,7 @@ $cliente = $resultado['cliente'];
                                         </tr>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="6">No hay datos del cliente.</td>
+                                            <td colspan="7">No hay datos del cliente.</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>

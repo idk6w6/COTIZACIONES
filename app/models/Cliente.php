@@ -24,12 +24,17 @@ class Cliente {
     }
 
     public function obtenerTodos() {
-        $sql = "SELECT * FROM clientes ORDER BY nombre"; 
         try {
-            $stmt = $this->conn->query($sql);
+            $stmt = $this->conn->prepare("
+                SELECT c.*, u.nombre_usuario 
+                FROM clientes c
+                LEFT JOIN usuarios u ON c.usuario_id = u.id
+                ORDER BY c.nombre
+            ");
+            $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch(PDOException $e) {
-            error_log("Error al obtener clientes: " . $e->getMessage());
+        } catch (PDOException $e) {
+            error_log("Error en Cliente->obtenerTodos: " . $e->getMessage());
             return [];
         }
     }
@@ -187,27 +192,27 @@ class Cliente {
             $stmt = $this->conn->prepare("
                 SELECT 
                     c.id,
-                    c.nombre,
+                    COALESCE(c.nombre, u.nombre_usuario) as nombre_cliente,
+                    u.nombre_usuario,
                     c.direccion,
-                    c.celular1,
-                    c.tel_oficina,
-                    c.correo,
-                    c.usuario_id,
                     TO_CHAR(u.fecha_creacion, 'DD/MM/YYYY') as fecha_registro
                 FROM usuarios u
-                INNER JOIN clientes c ON u.id = c.usuario_id
+                LEFT JOIN clientes c ON u.id = c.usuario_id
                 WHERE u.id = :usuario_id
             ");
             $stmt->execute(['usuario_id' => $usuario_id]);
-            $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($cliente) {
-                error_log("Datos del cliente encontrados: " . print_r($cliente, true));
-                return $cliente;
+            if (!$resultado) {
+                return [
+                    'nombre_usuario' => $_SESSION['nombre_usuario'],
+                    'nombre_cliente' => $_SESSION['nombre_usuario'],
+                    'direccion' => 'No especificada',
+                    'fecha_registro' => date('d/m/Y')
+                ];
             }
             
-            error_log("No se encontraron datos del cliente para usuario_id: " . $usuario_id);
-            return null;
+            return $resultado;
         } catch (PDOException $e) {
             error_log("Error en obtenerClientePorUsuarioId: " . $e->getMessage());
             return null;

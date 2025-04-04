@@ -13,32 +13,25 @@ class ClientesController {
 
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $campos = ['nombre', 'celular1', 'tel_oficina', 'correo', 'direccion', 'usuario_id'];
-            $errores = [];
-            
-            foreach ($campos as $campo) {
-                if (empty($_POST[$campo])) {
-                    $errores[] = "El campo " . ucfirst($campo) . " es obligatorio";
-                }
-            }
-            
-            if (!empty($errores)) {
-                return ['errores' => $errores];
-            }
-
             $datos = [
                 'nombre' => trim($_POST['nombre']),
                 'celular1' => trim($_POST['celular1']),
                 'tel_oficina' => trim($_POST['tel_oficina']),
                 'correo' => trim($_POST['correo']),
                 'direccion' => trim($_POST['direccion']),
-                'usuario_id' => $_POST['usuario_id']
+                'usuario_id' => $_SESSION['usuario_id']
             ];
 
             try {
+                // Actualizamos el cliente y el usuario
                 if ($this->clienteModel->actualizar($datos)) {
                     $_SESSION['nombre_usuario'] = $datos['nombre'];
                     $_SESSION['mensaje_exito'] = 'Datos actualizados correctamente';
+                    
+                    // Forzar actualización de la sesión
+                    session_write_close();
+                    session_start();
+                    
                     header('Location: /Cotizaciones/app/views/usuario/dashboard.php');
                     exit;
                 }
