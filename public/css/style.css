@@ -455,7 +455,7 @@ section {
 }
 
 .clientes_crear .form-container .btn-primary {
-    background: linear-gradient(45deg, #6a11cb, #2575fc); /* Updated gradient colors */
+    background: linear-gradient(45deg, #6a11cb, #2575fc); 
     border: none;
     width: 100%;
     padding: 0.75rem;
@@ -468,7 +468,7 @@ section {
 }
 
 .clientes_crear .form-container .btn-primary:hover {
-    background: linear-gradient(45deg, #2575fc, #6a11cb); /* Updated gradient colors */
+    background: linear-gradient(45deg, #2575fc, #6a11cb); 
 }
 
 /*clientes_editar*/
@@ -909,7 +909,7 @@ section {
     margin: 0 auto;
 }
 
-/*register*/
+/*registro*/
 .register-page .auth-box {
     max-width: 500px;
     margin: 0 auto;
@@ -981,85 +981,6 @@ section {
     color: #0f3443;
 }
 
-/*Responsivo*/
-@media (max-width: 768px) {
-    .auth-box {
-        margin: 1rem;
-    }
-    
-    .auth-header {
-        padding: 1.5rem;
-    }
-    
-    .auth-body {
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 0 1rem;
-    }
-    
-    .hero-section,
-    .features-section,
-    .carousel-section,
-    .cta-section {
-        margin: 0 1rem 4rem 1rem;
-        padding: 4rem 1rem;
-    }
-    
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .header-index h1 {
-        font-size: 2rem;
-    }
-
-    .hero-title {
-        font-size: 2rem !important;
-    }
-
-    .hero-image {
-        max-width: 100%;
-        margin-top: 2rem;
-    }
-
-    .feature-card {
-        padding: 1.5rem;
-    }
-
-    .cta-section {
-        padding: 2rem 1rem;
-    }
-
-    .cta-content h2 {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .modern-nav .btn-light {
-        padding: 0.5rem 1.5rem;
-        font-size: 0.8rem;
-    }
-
-    .hero-section {
-        text-align: center;
-        padding: 2rem 1rem;
-    }
-
-    .feature-card {
-        margin-bottom: 1rem;
-    }
-}
 
 /*Bootstrap*/
 .ratio-16x9 {
@@ -1540,7 +1461,7 @@ section {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
-    max-width: 400px; /* Limitar el ancho máximo */
+    max-width: 400px; 
     margin: 0 auto;
 }
 
@@ -1682,7 +1603,7 @@ section {
     }
 }
 
-/* Estilos para tablas de cotizaciones */
+/*tablas de cotizaciones*/
 #cotizacionesTable {
     border-collapse: collapse;
     width: 100%;
@@ -1716,7 +1637,6 @@ section {
     transition: background-color 0.3s ease;
 }
 
-/* Estilos para los badges de estado */
 #cotizacionesTable .badge {
     display: inline-block;
     padding: 8px 15px;
@@ -1748,7 +1668,6 @@ section {
     color: white;
 }
 
-/* Estilos para los botones de acción */
 #cotizacionesTable .btn-group .btn {
     margin: 0 3px;
     padding: 6px 12px;
@@ -1766,7 +1685,7 @@ section {
     background-color: rgba(0, 0, 0, 0.02);
 }
 
-/* Ajustes responsivos */
+/*responsivos*/
 @media (max-width: 768px) {
     #cotizacionesTable {
         font-size: 0.9rem;
@@ -1787,7 +1706,7 @@ section {
     }
 }
 
-/* Estilos para el listado de cotizaciones */
+/*listado de cotizaciones*/
 .table-cotizaciones-container {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -1813,7 +1732,6 @@ section {
     font-weight: 600;
 }
 
-/* DataTables personalización */
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter {
     margin-bottom: 1.5rem;
@@ -1851,7 +1769,46 @@ section {
     background-position: right 0.5rem center;
 }
 
-/* Tabla de cotizaciones */
+/* Estilo para el selector de registros */
+.dataTables_length select {
+    background-color: #fff;
+    border: 1px solid #673ab7;
+    border-radius: 8px;
+    padding: 8px 30px 8px 12px;
+    font-size: 14px;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23673ab7' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dataTables_length select:hover {
+    border-color: #512da8;
+    box-shadow: 0 2px 8px rgba(103, 58, 183, 0.2);
+}
+
+.dataTables_length select:focus {
+    outline: none;
+    border-color: #512da8;
+    box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.25);
+}
+
+.dataTables_length label {
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/*Tabla de cotizaciones*/
 #cotizacionesTable {
     width: 100% !important;
     margin-bottom: 1rem;
@@ -1880,7 +1837,6 @@ section {
     transition: background-color 0.3s ease;
 }
 
-/* Badges de estado */
 #cotizacionesTable .badge {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
@@ -1904,7 +1860,6 @@ section {
     color: white;
 }
 
-/* Paginación */
 .dataTables_paginate .paginate_button {
     padding: 0.5rem 1rem;
     margin: 0 0.2rem;
@@ -1925,7 +1880,121 @@ section {
     border: 1px solid #673ab7;
 }
 
-/* Responsividad */
+/*Responsividad */
+@media (max-width: 768px) {
+    .table-cotizaciones-container {
+        margin: 1rem auto;
+        max-width: 95%;
+    }
+    
+    .table-cotizaciones-container .card-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    #cotizacionesTable thead th,
+    #cotizacionesTable tbody td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+}
+@media (max-width: 768px) {
+    .auth-box {
+        margin: 1rem;
+    }
+    
+    .auth-header {
+        padding: 1.5rem;
+    }
+    
+    .auth-body {
+        padding: 1.5rem;
+    }
+}
+@media (max-width: 768px) {
+    .auth-box {
+        margin: 1rem;
+    }
+    
+    .auth-header {
+        padding: 1.5rem;
+    }
+    
+    .auth-body {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .hero-section,
+    .features-section,
+    .carousel-section,
+    .cta-section {
+        margin: 0 1rem 4rem 1rem;
+        padding: 4rem 1rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-index h1 {
+        font-size: 2rem;
+    }
+
+    .hero-title {
+        font-size: 2rem !important;
+    }
+
+    .hero-image {
+        max-width: 100%;
+        margin-top: 2rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem;
+    }
+
+    .cta-section {
+        padding: 2rem 1rem;
+    }
+
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .modern-nav .btn-light {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.8rem;
+    }
+
+    .hero-section {
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+
+    .feature-card {
+        margin-bottom: 1rem;
+    }
+}
+
 @media (max-width: 768px) {
     #cotizacionesTable thead th,
     #cotizacionesTable tbody td {
@@ -1940,7 +2009,6 @@ section {
     }
 }
 
-/* Estilos específicos para tabla de listado_cliente.php */
 .table-cotizaciones-container {
     margin: 2rem auto;
     max-width: 95%;
@@ -1958,7 +2026,6 @@ section {
     padding: 1rem;
 }
 
-/* Estilos específicos para la tabla #cotizacionesTable */
 #cotizacionesTable {
     width: 100% !important;
     border-collapse: separate;
@@ -1990,7 +2057,7 @@ section {
     color: #333;
 }
 
-/* Estados de las cotizaciones */
+/*Estados de las cotizaciones*/
 #cotizacionesTable .badge {
     padding: 8px 16px;
     font-size: 0.85rem;
@@ -2014,7 +2081,6 @@ section {
     color: #ffffff;
 }
 
-/* DataTables personalizados */
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter {
     margin: 1rem;
@@ -2033,7 +2099,6 @@ section {
     padding: 0.5rem;
 }
 
-/* Paginación personalizada */
 .dataTables_wrapper .dataTables_paginate {
     margin: 1rem;
     padding: 1rem 0;
@@ -2042,25 +2107,32 @@ section {
 .dataTables_wrapper .paginate_button {
     padding: 0.5rem 1rem !important;
     margin: 0 0.25rem !important;
-    border: 1px solid #673ab7 !important;
+    border: 1px solid #dee2e6 !important;
     border-radius: 8px !important;
-    color: #673ab7 !important;
-    background: #ffffff !important;
+    color: #333 !important;
+    background: #fff !important;
 }
 
-.dataTables_wrapper .paginate_button.current {
+.dataTables_wrapper .paginate_button.current,
+.dataTables_wrapper .paginate_button.current:hover {
     background: #673ab7 !important;
-    color: #ffffff !important;
+    color: #fff !important;
     border-color: #673ab7 !important;
+}
+
+.dataTables_wrapper .paginate_button .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #ffffff;
+    border-color: #ffffff;
 }
 
 .dataTables_wrapper .paginate_button:hover {
-    background: #f0e6ff !important;
-    color: #673ab7 !important;
-    border-color: #673ab7 !important;
+    background: #f0f0f0 !important;
+    color: #333 !important;
+    border-color: #dee2e6 !important;
 }
 
-/* Responsividad específica para la tabla */
 @media (max-width: 768px) {
     #cotizacionesTable thead th {
         font-size: 0.85rem;
@@ -2082,7 +2154,7 @@ section {
     }
 }
 
-/* Estilos específicos para el historial de cotizaciones */
+/*historial de cotizaciones*/
 .cotizaciones-historial .card-header {
     background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
     padding: 1.5rem;
@@ -2144,7 +2216,6 @@ section {
     color: white;
 }
 
-/* Estilos para DataTables */
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter {
     margin: 1rem;

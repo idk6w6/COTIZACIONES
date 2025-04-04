@@ -17,7 +17,7 @@ class ProductosController {
                 }
             }
             $productos = $this->model->getAll();
-            error_log("Controlador: Productos recuperados: " . count($productos)); // Debug
+            error_log("Controlador: Productos recuperados: " . count($productos));
             return $productos;
         } catch (Exception $e) {
             error_log("Error en ProductosController->index: " . $e->getMessage());
@@ -117,7 +117,6 @@ class ProductosController {
             $producto = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($producto) {
-                // Ajustar precio según método de costeo
                 $producto['precio'] = $this->ajustarPrecioPorMetodoCosteo($producto);
                 echo json_encode($producto);
             } else {
@@ -132,13 +131,12 @@ class ProductosController {
     }
 
     private function ajustarPrecioPorMetodoCosteo($producto) {
-        // Ya no aplicamos ajustes adicionales al precio base
         switch($producto['metodo_costeo']) {
             case 'PEPS - Primeras Entradas, Primeras Salidas':
             case 'Promedio Ponderado':
             case 'Costo Identificado':
             case 'Costo Estándar':
-                return $producto['precio']; // Devolvemos el precio sin modificar
+                return $producto['precio'];
             default:
                 return $producto['precio'];
         }

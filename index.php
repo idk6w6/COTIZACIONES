@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// Redirect logged in users to dashboard
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: dashboard/index.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -24,27 +30,18 @@ session_start();
                 </h1>
                 <nav class="modern-nav">
                     <ul class="nav justify-content-center align-items-center flex-wrap">
-                        <?php if (isset($_SESSION['usuario_id'])): ?>
-                            <li class="nav-item">
-                                <a href="auth/logout.php" class="btn-light">
-                                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                                    <span>Cerrar Sesión</span>
-                                </a>
-                            </li>
-                        <?php else: ?>
-                            <li class="nav-item">
-                                <a href="auth/login.php" class="btn-light">
-                                    <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
-                                    <span>Iniciar Sesión</span>
-                                </a>
-                            </li>
-                            <li class="nav-item ms-3">
-                                <a href="auth/register.php" class="btn-light">
-                                    <span class="icon"><i class="fas fa-user-plus"></i></span>
-                                    <span>Registrarse</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
+                        <li class="nav-item">
+                            <a href="auth/login.php" class="btn-light">
+                                <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
+                                <span>Iniciar Sesión</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ms-3">
+                            <a href="auth/register.php" class="btn-light">
+                                <span class="icon"><i class="fas fa-user-plus"></i></span>
+                                <span>Registrarse</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>

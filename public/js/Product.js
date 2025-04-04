@@ -1,4 +1,3 @@
-// Validación y funcionalidad del lado del cliente
 document.addEventListener('DOMContentLoaded', function() {
     const productoForm = document.getElementById('productoForm');
     if (productoForm) {
@@ -12,14 +11,14 @@ function validateForm(e) {
     const peso = parseFloat(document.getElementById('unidad_peso').value);
     const stock = parseInt(document.getElementById('stock').value);
 
-    // Validar precio
+    //Validar precio
     if (precio < 0 || precio > 99999.99) {
         e.preventDefault();
         alert('El precio debe estar entre 0 y 99,999.99');
         return false;
     }
 
-    // Validar tasas de IVA mexicano
+    //Validar tasas de IVA
     const tasasValidas = [0, 8, 16];
     if (!tasasValidas.includes(iva)) {
         e.preventDefault();
@@ -27,14 +26,14 @@ function validateForm(e) {
         return false;
     }
 
-    // Validar peso
+    //Validar peso
     if (peso < 0 || peso > 999.99) {
         e.preventDefault();
         alert('El peso debe estar entre 0 y 999.99');
         return false;
     }
 
-    // Validar stock
+    //Validar stock
     if (stock < 0 || stock > 9999) {
         e.preventDefault();
         alert('El stock debe estar entre 0 y 9,999 unidades');
@@ -54,7 +53,7 @@ function editarProducto(id) {
                 return;
             }
             
-            // Llenar formulario con datos del producto
+            //Llenar formulario con datos del producto
             document.getElementById('nombre_producto').value = data.nombre_producto || '';
             document.getElementById('descripcion').value = data.descripcion || '';
             document.getElementById('precio').value = data.precio || '';
@@ -63,27 +62,23 @@ function editarProducto(id) {
             document.getElementById('unidad_peso').value = data.unidad_peso || '';
             document.getElementById('metodo_costeo_id').value = data.metodo_costeo_id || '';
             
-            // Cambiar la acción del formulario a actualizar
+            //formulario a actualizar
             const form = document.getElementById('productoForm');
             form.querySelector('input[name="action"]').value = 'update';
             
-            // Eliminar entrada oculta de id existente si hay alguna
             const existingId = form.querySelector('input[name="id"]');
             if (existingId) {
                 existingId.remove();
             }
             
-            // Agregar entrada oculta para el id del producto
             const hiddenId = document.createElement('input');
             hiddenId.type = 'hidden';
             hiddenId.name = 'id';
             hiddenId.value = id;
             form.appendChild(hiddenId);
 
-            // Cambiar el texto del botón
             form.querySelector('button[type="submit"]').textContent = 'Actualizar Producto';
             
-            // Desplazarse al formulario
             form.scrollIntoView({ behavior: 'smooth' });
         })
         .catch(error => {

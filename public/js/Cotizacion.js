@@ -58,27 +58,27 @@ document.addEventListener('DOMContentLoaded', function() {
         total: document.getElementById('total')
     };
 
-    // Función para calcular todos los valores
+    //calcular todos los valores
     function calcularTotales() {
         const precio = parseFloat(campos.precio.value) || 0;
         const cantidad = parseInt(campos.cantidad.value) || 0;
         const iva = parseFloat(campos.iva.value) || 0;
 
-        // Calcular subtotal
+        //Calcular subtotal
         const subtotal = precio * cantidad;
         
-        // Calcular montos de IVA
+        //Calcular montos de IVA
         const montoIva = subtotal * (iva / 100);
         
-        // Calcular total
+        //Calcular total
         const total = subtotal + montoIva;
 
-        // Actualizar campos
+        //Actualizar campos
         campos.subtotal.value = subtotal.toFixed(2);
         campos.montoIva.value = montoIva.toFixed(2);
         campos.total.value = total.toFixed(2);
 
-        // Validar totales
+        //Validar totales
         const submitBtn = form.querySelector('button[type="submit"]');
         if (total <= 0) {
             submitBtn.disabled = true;
@@ -88,12 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // event listeners para campos que afectan los cálculos
     ['cantidad', 'descuento'].forEach(field => {
         campos[field].addEventListener('input', calcularTotales);
     });
 
-    // Validación del formulario antes de enviar
+    //Validación del formulario antes de enviar
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const total = parseFloat(campos.total.value);
@@ -102,19 +101,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        // Actualizar campos ocultos
+        //Actualizar campos ocultos
 
         document.getElementById('subtotal_hidden').value = campos.subtotal.value;
         document.getElementById('montoIva_hidden').value = campos.montoIva.value;
         document.getElementById('montoDescuento_hidden').value = campos.montoDescuento.value;
 
-        // Enviar formulario
+        //Enviar formulario
 
         form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
         form.submit();
     });
 
-    // Calcular totales iniciales
+    //Calcular totales iniciales
     calcularTotales();
 });
 
@@ -124,24 +123,20 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Obtener valores numéricos
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const montoIva = parseFloat(document.getElementById('montoIva').value) || 0;
             const montoDescuento = parseFloat(document.getElementById('montoDescuento').value) || 0;
             const total = parseFloat(document.getElementById('total').value) || 0;
             
-            // Validar valores
             if (subtotal <= 0 || montoIva < 0 || total <= 0) {
                 alert('Por favor verifique los montos. Deben ser valores numéricos válidos.');
                 return false;
             }
             
-            // Actualizar campos ocultos con valores numéricos
        document.getElementById('subtotal_hidden').value = subtotal.toFixed(2);
             document.getElementById('montoIva_hidden').value = montoIva.toFixed(2);
             document.getElementById('montoDescuento_hidden').value = montoDescuento.toFixed(2);
             
-            // Establecer la acción del formulario y enviarlo
             form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
             form.submit();
         });

@@ -126,7 +126,7 @@ $productos = $controller->index();
 
                     <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        // Inicializar tooltips de Bootstrap
+                        //tooltips de Bootstrap
                         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
                         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                             return new bootstrap.Tooltip(tooltipTriggerEl, {
@@ -135,7 +135,7 @@ $productos = $controller->index();
                             });
                         });
 
-                        // Actualizar tooltips cuando cambie el select
+                        //Actualizar tooltips cuando cambie el select
                         document.getElementById('metodo_costeo_id').addEventListener('change', function() {
                             tooltipList.forEach(tooltip => tooltip.update());
                         });
@@ -150,7 +150,6 @@ $productos = $controller->index();
                     <h3>Listado de Productos</h3>
                 </div>
                 <div class="card-body">
-                    <!-- Buscador mejorado -->
                     <div class="row mb-4">
                         <div class="col-md-6 mx-auto">
                             <form method="GET" action="" class="search-form">

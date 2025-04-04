@@ -20,7 +20,7 @@ class Productos {
             ");
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            error_log("Productos encontrados: " . count($result)); // Debug
+            error_log("Productos encontrados: " . count($result));
             return $result;
         } catch (PDOException $e) {
             error_log("Error en Productos->getAll: " . $e->getMessage());

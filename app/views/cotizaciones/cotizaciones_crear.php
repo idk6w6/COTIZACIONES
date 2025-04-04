@@ -233,10 +233,8 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('cotizacionForm');
     if (form) {
-        // Inicializar cálculos cuando carga la página
         inicializarCalculos();
 
-        // Manejar cambios en la cantidad
         document.getElementById('cantidad').addEventListener('input', function() {
             actualizarCantidadMax(<?php echo $producto_id; ?>);
         });
@@ -255,7 +253,6 @@ function cancelarCotizacion(id) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Agregar header para CSRF si lo tienes implementado
             },
             body: JSON.stringify({
                 action: 'cancelar',

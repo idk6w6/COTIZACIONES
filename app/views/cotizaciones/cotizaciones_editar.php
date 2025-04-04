@@ -44,7 +44,6 @@ if (!$puede_editar) {
                         <input type="hidden" name="montoIva" id="montoIva_hidden">
                         <input type="hidden" name="total" id="total_hidden">
                         
-                        <!-- Información del Cliente -->
                         <div class="mb-4">
                             <h4 class="border-bottom pb-2" style="color: #673ab7;">Información del Cliente</h4>
                             <div class="mb-3">
@@ -53,7 +52,6 @@ if (!$puede_editar) {
                             </div>
                         </div>
 
-                        <!-- Detalles del Producto -->
                         <div class="mb-4">
                             <h4 class="border-bottom pb-2" style="color: #673ab7;">Detalles del Producto</h4>
                             <div class="mb-3">
@@ -90,7 +88,6 @@ if (!$puede_editar) {
                             </div>
                         </div>
 
-                        <!-- Totales -->
                         <div class="mb-4">
                             <h4 class="border-bottom pb-2" style="color: #673ab7;">Totales</h4>
                             <div class="row">
@@ -129,8 +126,6 @@ if (!$puede_editar) {
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Botones con nuevo estilo -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg shadow">Generar Cotización</button>
                             <a href="cotizaciones_crear.php" class="btn btn-secondary shadow">Cancelar</a>
@@ -141,6 +136,7 @@ if (!$puede_editar) {
         </div>
     </div>
 </div>
+
 
 <script src="/Cotizaciones/public/js/cotizaciones.js"></script>
 <script>
@@ -159,13 +155,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const montoIva = (baseIva * iva) / 100;
         const total = baseIva + montoIva;
 
-        // Actualizamos los campos visibles
         document.getElementById('subtotal').value = formatCurrency(subtotal);
         document.getElementById('montoDescuento').value = formatCurrency(montoDescuento);
         document.getElementById('montoIva').value = formatCurrency(montoIva);
         document.getElementById('total').value = formatCurrency(total);
 
-        // Actualizamos los campos ocultos
         document.getElementById('subtotal_hidden').value = subtotal.toFixed(2);
         document.getElementById('montoIva_hidden').value = montoIva.toFixed(2);
         document.getElementById('total_hidden').value = total.toFixed(2);
@@ -178,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }).format(value);
     }
 
-    // Inicializar cálculos y event listeners
     document.getElementById('cantidad').addEventListener('input', calcularTotales);
     calcularTotales();
 });

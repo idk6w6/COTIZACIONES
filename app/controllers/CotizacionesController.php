@@ -48,7 +48,6 @@ class CotizacionesController {
             $stmt->execute(['cliente_id' => $cliente_id]);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Asegurar que el estado esté en minúsculas para comparaciones consistentes
             foreach ($results as &$row) {
                 $row['estado'] = strtolower($row['estado']);
             }
@@ -108,7 +107,6 @@ class CotizacionesController {
                 return false;
             }
             
-            // Obtener el producto actual
             $producto = $this->obtenerProducto($cotizacion['producto_id']);
             $cotizacion['producto'] = $producto;
             
@@ -122,7 +120,7 @@ class CotizacionesController {
 
     public function crear($datos) {
         try {
-            // Validar stock disponible
+            //stock disponible
             $stmt = $this->conn->prepare("SELECT stock FROM productos WHERE id = :producto_id");
             $stmt->execute(['producto_id' => $datos['producto_id']]);
             $stock = $stmt->fetchColumn();
@@ -201,12 +199,12 @@ class CotizacionesController {
 
     public function actualizarCotizacion($datos) {
         try {
-            // Obtener el producto y sus detalles
+            //Obtener el producto y sus detalles
             $producto = $this->obtenerProducto($datos['producto_id']);
             $precio = $producto['precio'];
             $cantidad = $datos['cantidad'];
             
-            // Calcular todos los montos
+            //Calcular todos los montos
             $subtotal = $cantidad * $precio;
             $montoDescuento = ($subtotal * $producto['descuento']) / 100;
             $baseIva = $subtotal - $montoDescuento;
@@ -215,7 +213,7 @@ class CotizacionesController {
 
             $this->conn->beginTransaction();
 
-            // Actualizar cotización principal
+            //Actualizar cotización principal
             $stmt = $this->conn->prepare("
                 UPDATE cotizaciones 
                 SET subtotal = :subtotal,
@@ -234,7 +232,7 @@ class CotizacionesController {
                 ':cotizacion_id' => $datos['cotizacion_id']
             ]);
 
-            // Actualizar detalles de la cotización
+            //Actualizar detalles de la cotización
             $stmt = $this->conn->prepare("
                 UPDATE detalles_cotizacion 
                 SET cantidad = :cantidad,
@@ -276,7 +274,7 @@ class CotizacionesController {
                 throw new Exception('Sesión no iniciada');
             }
 
-            // Actualizar el estado a 'cancelada' en lugar de eliminar
+            //Actualizar el estado a 'cancelada'
             $stmt = $this->conn->prepare("
                 UPDATE cotizaciones 
                 SET estado = 'cancelada' 
@@ -298,39 +296,27 @@ class CotizacionesController {
     }
 
     public function obtenerTodasLasCotizaciones() {
-        try {
-            $sql = "SELECT 
+        $sql = "SELECT 
                     c.id, 
-                    u.nombre_usuario as nombre_usuario,
-                    cl.nombre as nombre_cliente,
+                    TO_CHAR(c.fecha_cotizacion, 'YYYY-MM-DD HH24:MI:SS') as fecha_cotizacion, 
+                    c.estado, c.subtotal, c.iva, c.descuento, c.total,
+                    u.nombre_usuario,
+                    cl.nombre as nombre_cliente, cl.direccion,
                     p.nombre_producto,
-                    dc.cantidad,
-                    dc.precio,
-                    c.subtotal,
-                    c.iva,
-                    c.descuento,
-                    c.total,
-                    TO_CHAR(c.fecha_cotizacion, 'DD/MM/YYYY HH24:MI') as fecha_cotizacion,
-                    COALESCE(c.estado, 'pendiente') as estado
-                FROM cotizaciones c 
-                INNER JOIN detalles_cotizacion dc ON c.id = dc.cotizacion_id 
-                INNER JOIN productos p ON dc.producto_id = p.id 
+                    dc.cantidad, dc.precio
+                FROM cotizaciones c
                 INNER JOIN usuarios u ON c.usuario_id = u.id
                 INNER JOIN clientes cl ON c.cliente_id = cl.id
+                INNER JOIN detalles_cotizacion dc ON c.id = dc.cotizacion_id
+                INNER JOIN productos p ON dc.producto_id = p.id
                 ORDER BY c.fecha_cotizacion DESC";
-            
+        
+        try {
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            // Debug para ver qué está devolviendo
-            error_log("Cotizaciones encontradas: " . count($results));
-            error_log("Primera cotización: " . print_r($results[0] ?? 'No hay resultados', true));
-            
-            return $results;
-
-        } catch (Exception $e) {
-            error_log("Error en obtenerTodasLasCotizaciones: " . $e->getMessage());
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener cotizaciones: " . $e->getMessage());
             return [];
         }
     }

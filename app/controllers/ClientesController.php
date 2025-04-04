@@ -23,12 +23,10 @@ class ClientesController {
             ];
 
             try {
-                // Actualizamos el cliente y el usuario
                 if ($this->clienteModel->actualizar($datos)) {
                     $_SESSION['nombre_usuario'] = $datos['nombre'];
                     $_SESSION['mensaje_exito'] = 'Datos actualizados correctamente';
                     
-                    // Forzar actualización de la sesión
                     session_write_close();
                     session_start();
                     

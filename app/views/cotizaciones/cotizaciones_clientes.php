@@ -3,7 +3,6 @@ session_start();
 require_once __DIR__ . '/../../controllers/CotizacionesController.php';
 require_once __DIR__ . '/../../controllers/ClientesController.php';
 
-// Verificar si el usuario está autenticado
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: /Cotizaciones/auth/login.php');
     exit;
@@ -33,70 +32,81 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
     ?>
     
     <div class="container mt-4">
-        <h2>Cotizaciones de Clientes</h2>
-        
-        <table id="cotizacionesTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Cliente</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unit.</th>
-                    <th>Subtotal</th>
-                    <th>IVA</th>
-                    <th>Descuento</th>
-                    <th>Total</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($cotizaciones as $cotizacion): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($cotizacion['id']); ?></td>
-                        <td><?php echo htmlspecialchars($cotizacion['nombre_usuario']); ?></td>
-                        <td><?php echo htmlspecialchars($cotizacion['nombre_cliente']); ?></td>
-                        <td><?php echo htmlspecialchars($cotizacion['nombre_producto']); ?></td>
-                        <td><?php echo htmlspecialchars($cotizacion['cantidad']); ?></td>
-                        <td>$<?php echo number_format($cotizacion['precio'], 2); ?></td>
-                        <td>$<?php echo number_format($cotizacion['subtotal'], 2); ?></td>
-                        <td>$<?php echo number_format($cotizacion['iva'], 2); ?></td>
-                        <td>$<?php echo number_format($cotizacion['descuento'], 2); ?></td>
-                        <td>$<?php echo number_format($cotizacion['total'], 2); ?></td>
-                        <td><?php echo htmlspecialchars($cotizacion['fecha_cotizacion']); ?></td>
-                        <td>
-                            <span class="badge badge-<?php echo $cotizacion['estado'] == 'pendiente' ? 'warning' : ($cotizacion['estado'] == 'realizada' ? 'success' : 'danger'); ?>">
-                                <?php echo ucfirst(htmlspecialchars($cotizacion['estado'])); ?>
-                            </span>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-warning cambiar-estado" 
-                                        data-id="<?php echo $cotizacion['id']; ?>" 
-                                        data-estado="pendiente"
-                                        <?php echo $cotizacion['estado'] == 'pendiente' ? 'disabled' : ''; ?>>
-                                    Pendiente
-                                </button>
-                                <button type="button" class="btn btn-sm btn-success cambiar-estado" 
-                                        data-id="<?php echo $cotizacion['id']; ?>" 
-                                        data-estado="realizada"
-                                        <?php echo $cotizacion['estado'] == 'realizada' ? 'disabled' : ''; ?>>
-                                    Realizada
-                                </button>
-                                <button type="button" class="btn btn-sm btn-danger cancelar-cotizacion" 
-                                        data-id="<?php echo $cotizacion['id']; ?>"
-                                        <?php echo $cotizacion['estado'] == 'cancelada' ? 'disabled' : ''; ?>>
-                                    Cancelar
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="table-cotizaciones-container">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Cotizaciones de Clientes</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="cotizacionesTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Cliente</th>
+                                    <th>Dirección</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unit.</th>
+                                    <th>Subtotal</th>
+                                    <th>IVA</th>
+                                    <th>Descuento</th>
+                                    <th>Total</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($cotizaciones as $cotizacion): ?>
+                                    <tr>
+                                        <td class="text-center"><?php echo htmlspecialchars($cotizacion['id']); ?></td>
+                                        <td><?php echo htmlspecialchars($cotizacion['nombre_usuario']); ?></td>
+                                        <td><?php echo htmlspecialchars($cotizacion['nombre_cliente']); ?></td>
+                                        <td><?php echo htmlspecialchars($cotizacion['direccion']); ?></td>
+                                        <td><?php echo htmlspecialchars($cotizacion['nombre_producto']); ?></td>
+                                        <td class="text-center"><?php echo htmlspecialchars($cotizacion['cantidad']); ?></td>
+                                        <td class="text-end">$<?php echo number_format($cotizacion['precio'], 2); ?></td>
+                                        <td class="text-end">$<?php echo number_format($cotizacion['subtotal'], 2); ?></td>
+                                        <td class="text-end">$<?php echo number_format($cotizacion['iva'], 2); ?></td>
+                                        <td class="text-end">$<?php echo number_format($cotizacion['descuento'], 2); ?></td>
+                                        <td class="text-end">$<?php echo number_format($cotizacion['total'], 2); ?></td>
+                                        <td class="text-center"><?php echo htmlspecialchars($cotizacion['fecha_cotizacion']); ?></td>
+                                        <td class="text-center">
+                                            <span class="badge badge-<?php echo $cotizacion['estado'] == 'pendiente' ? 'warning' : ($cotizacion['estado'] == 'realizada' ? 'success' : 'danger'); ?>">
+                                                <?php echo ucfirst(htmlspecialchars($cotizacion['estado'])); ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-warning cambiar-estado" 
+                                                        data-id="<?php echo $cotizacion['id']; ?>" 
+                                                        data-estado="pendiente"
+                                                        <?php echo $cotizacion['estado'] == 'pendiente' ? 'disabled' : ''; ?>>
+                                                    Pendiente
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-success cambiar-estado" 
+                                                        data-id="<?php echo $cotizacion['id']; ?>" 
+                                                        data-estado="realizada"
+                                                        <?php echo $cotizacion['estado'] == 'realizada' ? 'disabled' : ''; ?>>
+                                                    Realizada
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger cancelar-cotizacion" 
+                                                        data-id="<?php echo $cotizacion['id']; ?>"
+                                                        <?php echo $cotizacion['estado'] == 'cancelada' ? 'disabled' : ''; ?>>
+                                                    Cancelar
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
