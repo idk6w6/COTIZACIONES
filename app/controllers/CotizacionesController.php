@@ -32,7 +32,8 @@ class CotizacionesController {
                         c.subtotal,
                         c.iva,
                         c.descuento,
-                        c.total
+                        c.total,
+                        COALESCE(c.estado, 'pendiente') as estado
                     FROM cotizaciones c 
                     INNER JOIN detalles_cotizacion dc ON c.id = dc.cotizacion_id 
                     INNER JOIN productos p ON dc.producto_id = p.id 
@@ -267,51 +268,86 @@ class CotizacionesController {
                 throw new Exception('Sesión no iniciada');
             }
 
-            // Verificar que la cotización exista y pertenezca al usuario
+            // Actualizar el estado a 'cancelada' en lugar de eliminar
             $stmt = $this->conn->prepare("
-                SELECT c.*, 
-                       TO_CHAR(c.fecha_cotizacion, 'YYYY-MM-DD HH24:MI:SS') as fecha_cotizacion
-                FROM cotizaciones c
-                INNER JOIN clientes cl ON c.cliente_id = cl.id
-                WHERE c.id = :id AND cl.usuario_id = :usuario_id"
-            );
+                UPDATE cotizaciones 
+                SET estado = 'cancelada' 
+                WHERE id = :id
+            ");
             
-            $stmt->execute([
-                'id' => $id,
-                'usuario_id' => $_SESSION['usuario_id']
-            ]);
-            
-            $cotizacion = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if (!$cotizacion) {
-                throw new Exception('Cotización no encontrada');
-            }
-            
-            $fecha_cotizacion = strtotime($cotizacion['fecha_cotizacion']);
-            $fecha_limite = strtotime('+1 day', $fecha_cotizacion);
-            
-            if (time() > $fecha_limite) {
-                throw new Exception('No se puede cancelar la cotización después de 24 horas');
-            }
-            
-            $this->conn->beginTransaction();
-            
-            // Eliminar primero los detalles
-            $stmt = $this->conn->prepare("DELETE FROM detalles_cotizacion WHERE cotizacion_id = :id");
             $stmt->execute(['id' => $id]);
             
-            // Luego eliminar la cotización
-            $stmt = $this->conn->prepare("DELETE FROM cotizaciones WHERE id = :id");
-            $stmt->execute(['id' => $id]);
-            
-            $this->conn->commit();
-            return ['success' => true, 'message' => 'Cotización cancelada exitosamente'];
+            if ($stmt->rowCount() > 0) {
+                return ['success' => true, 'message' => 'Cotización cancelada exitosamente'];
+            } else {
+                throw new Exception('No se pudo encontrar la cotización');
+            }
             
         } catch (Exception $e) {
-            if ($this->conn->inTransaction()) {
-                $this->conn->rollBack();
-            }
             error_log("Error en cancelarCotizacion: " . $e->getMessage());
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    public function obtenerTodasLasCotizaciones() {
+        try {
+            $sql = "SELECT 
+                    c.id, 
+                    u.nombre_usuario as nombre_usuario,
+                    cl.nombre as nombre_cliente,
+                    p.nombre_producto,
+                    dc.cantidad,
+                    dc.precio,
+                    c.subtotal,
+                    c.iva,
+                    c.descuento,
+                    c.total,
+                    TO_CHAR(c.fecha_cotizacion, 'DD/MM/YYYY HH24:MI') as fecha_cotizacion,
+                    COALESCE(c.estado, 'pendiente') as estado
+                FROM cotizaciones c 
+                INNER JOIN detalles_cotizacion dc ON c.id = dc.cotizacion_id 
+                INNER JOIN productos p ON dc.producto_id = p.id 
+                INNER JOIN usuarios u ON c.usuario_id = u.id
+                INNER JOIN clientes cl ON c.cliente_id = cl.id
+                ORDER BY c.fecha_cotizacion DESC";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Debug para ver qué está devolviendo
+            error_log("Cotizaciones encontradas: " . count($results));
+            error_log("Primera cotización: " . print_r($results[0] ?? 'No hay resultados', true));
+            
+            return $results;
+
+        } catch (Exception $e) {
+            error_log("Error en obtenerTodasLasCotizaciones: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function cambiarEstado($id, $estado) {
+        try {
+            $estadosPermitidos = ['pendiente', 'realizada', 'cancelada'];
+            if (!in_array($estado, $estadosPermitidos)) {
+                throw new Exception('Estado no válido');
+            }
+
+            $stmt = $this->conn->prepare("
+                UPDATE cotizaciones 
+                SET estado = :estado 
+                WHERE id = :id
+            ");
+            
+            $stmt->execute([
+                ':id' => $id,
+                ':estado' => $estado
+            ]);
+            
+            return ['success' => true, 'message' => 'Estado actualizado correctamente'];
+        } catch (Exception $e) {
+            error_log("Error en cambiarEstado: " . $e->getMessage());
             return ['success' => false, 'message' => $e->getMessage()];
         }
     }
@@ -368,6 +404,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         exit;
     }
+
+    if ($_POST['action'] === 'cambiar_estado') {
+        header('Content-Type: application/json');
+        echo json_encode($controller->cambiarEstado($_POST['id'], $_POST['estado']));
+        exit;
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -377,13 +419,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $controller = new CotizacionesController();
     
-    // Obtener el cuerpo de la solicitud JSON
-    $input = json_decode(file_get_contents('php://input'), true);
-    
-    if (isset($input['action']) && $input['action'] === 'cancelar') {
+    if (isset($_POST['action'])) {
         header('Content-Type: application/json');
-        echo json_encode($controller->cancelarCotizacion($input['id']));
-        exit;
+        
+        if ($_POST['action'] === 'cancelar') {
+            echo json_encode($controller->cancelarCotizacion($_POST['id']));
+            exit;
+        }
     }
 }
 ?>

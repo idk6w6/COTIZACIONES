@@ -60,7 +60,7 @@ if (!str_contains($current_path, '/auth/') && !isset($_SESSION['usuario_id'])) {
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/Cotizaciones/#cotizacion">
+                                <a class="nav-link" href="/Cotizaciones/app/views/cotizaciones/cotizaciones_clientes.php">
                                     <i class="fas fa-file-invoice-dollar"></i> Cotización a Clientes
                                 </a>
                             </li>

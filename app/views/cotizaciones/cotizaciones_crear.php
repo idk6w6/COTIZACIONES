@@ -46,7 +46,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                     if (!empty($cotizaciones)): 
                     ?>
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table id="cotizacionesTable" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>Fecha</th>
@@ -57,6 +57,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                                     <th>IVA</th>
                                     <th>Descuento</th>
                                     <th>Total</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -76,19 +77,24 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                                         <td>$<?php echo number_format($cotizacion['descuento'], 2); ?></td>
                                         <td>$<?php echo number_format($cotizacion['total'], 2); ?></td>
                                         <td>
-                                            <?php if ($puede_editar): ?>
-                                            <div class="btn-group">
+                                            <span class="badge badge-<?php 
+                                                echo $cotizacion['estado'] == 'pendiente' ? 'warning text-dark' : 
+                                                    ($cotizacion['estado'] == 'realizada' ? 'success text-dark' : 'danger text-dark');
+                                            ?>">
+                                                <?php echo ucfirst(htmlspecialchars($cotizacion['estado'] ?? 'pendiente')); ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <?php if ($puede_editar && $cotizacion['estado'] == 'pendiente'): ?>
                                                 <a href="cotizaciones_editar.php?id=<?php echo $cotizacion['id']; ?>" 
-                                                   class="btn btn-warning btn-sm" 
-                                                   title="Editar">
-                                                    <i class="fas fa-edit"></i>
+                                                   class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit"></i> Editar
                                                 </a>
-                                                <button onclick="cancelarCotizacion(<?php echo $cotizacion['id']; ?>)"
-                                                        class="btn btn-danger btn-sm"
-                                                        title="Cancelar">
-                                                    <i class="fas fa-times"></i>
+                                                <button type="button" 
+                                                        class="btn btn-danger btn-sm" 
+                                                        onclick="cancelarCotizacion(<?php echo $cotizacion['id']; ?>)">
+                                                    <i class="fas fa-times"></i> Cancelar
                                                 </button>
-                                            </div>
                                             <?php else: ?>
                                                 <span class="badge bg-secondary">No editable</span>
                                             <?php endif; ?>

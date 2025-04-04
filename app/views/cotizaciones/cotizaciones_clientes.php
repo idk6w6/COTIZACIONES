@@ -3,8 +3,8 @@ session_start();
 require_once __DIR__ . '/../../controllers/CotizacionesController.php';
 require_once __DIR__ . '/../../controllers/ClientesController.php';
 
-// Verificar si el usuario está autenticado y es admin
-if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['es_admin']) || $_SESSION['es_admin'] != 1) {
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['usuario_id'])) {
     header('Location: /Cotizaciones/auth/login.php');
     exit;
 }
@@ -43,6 +43,10 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
                     <th>Cliente</th>
                     <th>Producto</th>
                     <th>Cantidad</th>
+                    <th>Precio Unit.</th>
+                    <th>Subtotal</th>
+                    <th>IVA</th>
+                    <th>Descuento</th>
                     <th>Total</th>
                     <th>Fecha</th>
                     <th>Estado</th>
@@ -57,6 +61,10 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
                         <td><?php echo htmlspecialchars($cotizacion['nombre_cliente']); ?></td>
                         <td><?php echo htmlspecialchars($cotizacion['nombre_producto']); ?></td>
                         <td><?php echo htmlspecialchars($cotizacion['cantidad']); ?></td>
+                        <td>$<?php echo number_format($cotizacion['precio'], 2); ?></td>
+                        <td>$<?php echo number_format($cotizacion['subtotal'], 2); ?></td>
+                        <td>$<?php echo number_format($cotizacion['iva'], 2); ?></td>
+                        <td>$<?php echo number_format($cotizacion['descuento'], 2); ?></td>
                         <td>$<?php echo number_format($cotizacion['total'], 2); ?></td>
                         <td><?php echo htmlspecialchars($cotizacion['fecha_cotizacion']); ?></td>
                         <td>
@@ -99,23 +107,31 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
             $('#cotizacionesTable').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json"
-                }
+                },
+                "order": [[6, "desc"]] // Order by fecha column descending
             });
 
             $('.cambiar-estado').click(function() {
                 const id = $(this).data('id');
                 const estado = $(this).data('estado');
                 
-                $.post('/Cotizaciones/app/controllers/CotizacionesController.php', {
-                    action: 'cambiar_estado',
-                    id: id,
-                    estado: estado
-                })
-                .done(function(response) {
-                    if(response.success) {
-                        location.reload();
-                    } else {
-                        alert('Error al cambiar el estado: ' + response.message);
+                $.ajax({
+                    url: '/Cotizaciones/app/controllers/CotizacionesController.php',
+                    type: 'POST',
+                    data: {
+                        action: 'cambiar_estado',
+                        id: id,
+                        estado: estado
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Error al cambiar el estado: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Error al procesar la solicitud');
                     }
                 });
             });
@@ -124,15 +140,23 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
                 if(confirm('¿Está seguro de que desea cancelar esta cotización?')) {
                     const id = $(this).data('id');
                     
-                    $.post('/Cotizaciones/app/controllers/CotizacionesController.php', {
-                        action: 'cancelar',
-                        id: id
-                    })
-                    .done(function(response) {
-                        if(response.success) {
-                            location.reload();
-                        } else {
-                            alert('Error al cancelar la cotización: ' + response.message);
+                    $.ajax({
+                        url: '/Cotizaciones/app/controllers/CotizacionesController.php',
+                        type: 'POST',
+                        data: {
+                            action: 'cancelar',
+                            id: id
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if(response.success) {
+                                location.reload();
+                            } else {
+                                alert('Error al cancelar la cotización: ' + (response.message || 'Error desconocido'));
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error en la solicitud: ' + error);
                         }
                     });
                 }
