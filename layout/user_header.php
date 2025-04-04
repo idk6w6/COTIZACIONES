@@ -59,7 +59,7 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Cotizaciones/#reportes">
+                                    <a class="nav-link" href="/Cotizaciones/app/views/reportes/listado_cliente.php">
                                         <i class="fas fa-chart-bar"></i> Listado de Cotizaciones
                                     </a>
                                 </li>

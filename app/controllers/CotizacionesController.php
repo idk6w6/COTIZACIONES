@@ -25,6 +25,8 @@ class CotizacionesController {
 
             $sql = "SELECT 
                         c.id, 
+                        u.nombre_usuario,
+                        cl.nombre as nombre_cliente,
                         c.fecha_cotizacion, 
                         p.nombre_producto,
                         dc.cantidad,
@@ -33,10 +35,12 @@ class CotizacionesController {
                         c.iva,
                         c.descuento,
                         c.total,
-                        COALESCE(c.estado, 'pendiente') as estado
+                        LOWER(COALESCE(c.estado, 'pendiente')) as estado
                     FROM cotizaciones c 
                     INNER JOIN detalles_cotizacion dc ON c.id = dc.cotizacion_id 
                     INNER JOIN productos p ON dc.producto_id = p.id 
+                    INNER JOIN usuarios u ON c.usuario_id = u.id
+                    INNER JOIN clientes cl ON c.cliente_id = cl.id
                     WHERE c.cliente_id = :cliente_id 
                     ORDER BY c.fecha_cotizacion DESC";
             
@@ -44,7 +48,11 @@ class CotizacionesController {
             $stmt->execute(['cliente_id' => $cliente_id]);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            error_log("Cotizaciones encontradas: " . count($results));
+            // Asegurar que el estado esté en minúsculas para comparaciones consistentes
+            foreach ($results as &$row) {
+                $row['estado'] = strtolower($row['estado']);
+            }
+            
             return $results;
 
         } catch (Exception $e) {

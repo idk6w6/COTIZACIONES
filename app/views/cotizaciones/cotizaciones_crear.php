@@ -49,6 +49,9 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                         <table id="cotizacionesTable" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Cliente</th>
                                     <th>Fecha</th>
                                     <th>Producto</th>
                                     <th>Cantidad</th>
@@ -68,6 +71,9 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                                     $puede_editar = time() < $fecha_limite;
                                 ?>
                                     <tr>
+                                        <td><?php echo $cotizacion['id']; ?></td>
+                                        <td><?php echo htmlspecialchars($cotizacion['nombre_usuario']); ?></td>
+                                        <td><?php echo htmlspecialchars($cotizacion['nombre_cliente']); ?></td>
                                         <td><?php echo date('d/m/Y', strtotime($cotizacion['fecha_cotizacion'])); ?></td>
                                         <td><?php echo htmlspecialchars($cotizacion['nombre_producto']); ?></td>
                                         <td><?php echo $cotizacion['cantidad']; ?></td>
