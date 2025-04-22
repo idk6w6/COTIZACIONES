@@ -27,7 +27,7 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
     try {
         include __DIR__ . '/../../../layout/admin_header.php';
     } catch (Exception $e) {
-        error_log("Error loading header: " . $e->getMessage());
+        error_log("Error en header: " . $e->getMessage());
     }
     ?>
     
