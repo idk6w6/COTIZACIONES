@@ -3,49 +3,107 @@ const sequelize = require('../config/database');
 const Client = require('./Client');
 const User = require('./User');
 
-const Quotation = sequelize.define('Quotation', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    cliente_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Client,
-            key: 'id'
+// funcion para definir el modelo de cotizacion
+function definirCotizacion() {
+    return sequelize.define('Quotation', {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        cliente_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: Client,
+                key: 'id'
+            }
+        },
+        usuario_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: User,
+                key: 'id'
+            }
+        },
+        fecha_cotizacion: {
+            type: DataTypes.DATE
+        },
+        subtotal: {
+            type: DataTypes.DECIMAL(10, 2)
+        },
+        descuento: {
+            type: DataTypes.DECIMAL(10, 2)
+        },
+        iva: {
+            type: DataTypes.DECIMAL(5, 2)
+        },
+        total: {
+            type: DataTypes.DECIMAL(10, 2)
         }
-    },
-    usuario_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: User,
-            key: 'id'
-        }
-    },
-    fecha_cotizacion: {
-        type: DataTypes.DATE
-    },
-    subtotal: {
-        type: DataTypes.DECIMAL(10, 2)
-    },
-    descuento: {
-        type: DataTypes.DECIMAL(10, 2)
-    },
-    iva: {
-        type: DataTypes.DECIMAL(5, 2)
-    },
-    total: {
-        type: DataTypes.DECIMAL(10, 2)
-    }
-}, {
-    tableName: 'cotizaciones',
-    timestamps: false
-});
+    }, {
+        tableName: 'cotizaciones',
+        timestamps: false
+    });
+}
 
+const Quotation = definirCotizacion();
 module.exports = Quotation;
 
-document.addEventListener('DOMContentLoaded', function() {
+// funcion para calcular los totales
+function calcularTotales(campos) {
+    const precio = parseFloat(campos.precio.value) || 0;
+    const cantidad = parseInt(campos.cantidad.value) || 0;
+    const iva = parseFloat(campos.iva.value) || 0;
+
+    // calcular subtotal
+    const subtotal = precio * cantidad;
+    
+    // calcular monto de iva
+    const montoIva = subtotal * (iva / 100);
+    
+    // calcular total
+    const total = subtotal + montoIva;
+
+    // actualizar campos
+    campos.subtotal.value = subtotal.toFixed(2);
+    campos.montoIva.value = montoIva.toFixed(2);
+    campos.total.value = total.toFixed(2);
+
+    return total;
+}
+
+// funcion para habilitar o deshabilitar el boton de enviar
+function manejarBotonSubmit(form, total) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (total <= 0) {
+        submitBtn.disabled = true;
+        alert('El total debe ser mayor a cero');
+    } else {
+        submitBtn.disabled = false;
+    }
+}
+
+// funcion para manejar la validacion del formulario
+function validarFormulario(e, campos, form) {
+    e.preventDefault();
+    const total = parseFloat(campos.total.value);
+    if (total <= 0) {
+        alert('El total de la cotización debe ser mayor a cero');
+        return false;
+    }
+
+    // actualizar campos ocultos
+    document.getElementById('subtotal_hidden').value = campos.subtotal.value;
+    document.getElementById('montoIva_hidden').value = campos.montoIva.value;
+    document.getElementById('montoDescuento_hidden').value = campos.montoDescuento.value;
+
+    // enviar formulario
+    form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
+    form.submit();
+}
+
+// funcion para iniciar la logica de cotizacion
+function iniciarCotizacion() {
     const form = document.getElementById('cotizacionForm');
     const campos = {
         precio: document.getElementById('precio'),
@@ -58,87 +116,55 @@ document.addEventListener('DOMContentLoaded', function() {
         total: document.getElementById('total')
     };
 
-    //calcular todos los valores
-    function calcularTotales() {
-        const precio = parseFloat(campos.precio.value) || 0;
-        const cantidad = parseInt(campos.cantidad.value) || 0;
-        const iva = parseFloat(campos.iva.value) || 0;
-
-        //Calcular subtotal
-        const subtotal = precio * cantidad;
-        
-        //Calcular montos de IVA
-        const montoIva = subtotal * (iva / 100);
-        
-        //Calcular total
-        const total = subtotal + montoIva;
-
-        //Actualizar campos
-        campos.subtotal.value = subtotal.toFixed(2);
-        campos.montoIva.value = montoIva.toFixed(2);
-        campos.total.value = total.toFixed(2);
-
-        //Validar totales
-        const submitBtn = form.querySelector('button[type="submit"]');
-        if (total <= 0) {
-            submitBtn.disabled = true;
-            alert('El total debe ser mayor a cero');
-        } else {
-            submitBtn.disabled = false;
-        }
-    }
-
+    // calcular los totales al cambiar cantidad o descuento
     ['cantidad', 'descuento'].forEach(field => {
-        campos[field].addEventListener('input', calcularTotales);
+        campos[field].addEventListener('input', function() {
+            const total = calcularTotales(campos);
+            manejarBotonSubmit(form, total);
+        });
     });
 
-    //Validación del formulario antes de enviar
+    // validacion antes de enviar el formulario
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const total = parseFloat(campos.total.value);
-        if (total <= 0) {
-            alert('El total de la cotización debe ser mayor a cero');
-            return false;
-        }
-
-        //Actualizar campos ocultos
-
-        document.getElementById('subtotal_hidden').value = campos.subtotal.value;
-        document.getElementById('montoIva_hidden').value = campos.montoIva.value;
-        document.getElementById('montoDescuento_hidden').value = campos.montoDescuento.value;
-
-        //Enviar formulario
-
-        form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
-        form.submit();
+        validarFormulario(e, campos, form);
     });
 
-    //Calcular totales iniciales
-    calcularTotales();
-});
+    // calcular totales iniciales
+    calcularTotales(campos);
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+// funcion para manejar el segundo evento DOMContentLoaded
+function validarAntesDeEnviar() {
     const form = document.getElementById('cotizacionForm');
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const montoIva = parseFloat(document.getElementById('montoIva').value) || 0;
             const montoDescuento = parseFloat(document.getElementById('montoDescuento').value) || 0;
             const total = parseFloat(document.getElementById('total').value) || 0;
-            
+
+            // verificar montos antes de enviar
             if (subtotal <= 0 || montoIva < 0 || total <= 0) {
-                alert('Por favor verifique los montos. Deben ser valores numéricos válidos.');
+                alert('Por favor verifique los montos. Deben ser valores numericos validos.');
                 return false;
             }
-            
-       document.getElementById('subtotal_hidden').value = subtotal.toFixed(2);
+
+            // actualizar campos ocultos
+            document.getElementById('subtotal_hidden').value = subtotal.toFixed(2);
             document.getElementById('montoIva_hidden').value = montoIva.toFixed(2);
             document.getElementById('montoDescuento_hidden').value = montoDescuento.toFixed(2);
-            
+
+            // enviar formulario
             form.action = '/Cotizaciones/app/controllers/CotizacionesController.php';
             form.submit();
         });
     }
+}
+
+// escuchar el evento DOMContentLoaded para iniciar la cotizacion
+document.addEventListener('DOMContentLoaded', function() {
+    iniciarCotizacion();
+    validarAntesDeEnviar();
 });

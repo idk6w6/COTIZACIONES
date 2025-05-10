@@ -122,6 +122,7 @@ $usuarios = $usuarioController->obtenerTodosUsuarios();
 
 <?php include '../../../layout/footer.php'; ?>
 
+
 <script>
 function confirmarEliminacion(id) {
     if (confirm('¿Está seguro de que desea eliminar este usuario?')) {

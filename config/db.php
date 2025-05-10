@@ -1,11 +1,24 @@
 <?php
 
+//Recuerda crear un archivo "credenciales.php" en la carpeta config/ asi:
+/* <?php
+const HOST = "----";
+const DB = "----";
+const USER = "----";
+const PASS = "----";
+const PORT = "----"; */
+//cambialo por los datos de tu bd
+//credenciales.php no se sube al github por el .gitignore
+//pato estuvo aqui
+
+include 'credenciales.php';
+
 class Database {
-    private $host = "localhost";
-    private $db = "gestor_cotizacion";
-    private $user = "postgres";
-    private $pass = "Luh1234567";
-    private $port = "5432";  
+    private $host = HOST;
+    private $db = DB;
+    private $user = USER;
+    private $pass = PASS;
+    private $port = PORT;  
     private $conn = null;
 
 
