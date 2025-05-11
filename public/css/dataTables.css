@@ -1,0 +1,92 @@
+/* --- Contenedores de longitud y búsqueda --- */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Inputs y selects generales --- */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #673ab7;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+/* --- Filtro específico (input) --- */
+.dataTables_wrapper .dataTables_filter input {
+    width: 300px;
+    padding: 0.5rem 1rem;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #673ab7;
+    box-shadow: 0 0 0 0.2rem rgba(103, 58, 183, 0.25);
+    outline: none;
+}
+
+/* --- Etiqueta de longitud --- */
+.dataTables_wrapper .dataTables_length label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* --- Estilo visual adicional para el select de longitud --- */
+.dataTables_length select {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 8px 30px 8px 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23673ab7' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dataTables_length select:hover {
+    border-color: #512da8;
+    box-shadow: 0 2px 8px rgba(103, 58, 183, 0.2);
+}
+
+.dataTables_length select:focus {
+    outline: none;
+    border-color: #512da8;
+    box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.25);
+}
+
+/* --- Paginación --- */
+.dataTables_wrapper .dataTables_paginate {
+    margin: 1rem;
+    padding: 1rem 0;
+}
+
+.dataTables_wrapper .paginate_button {
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem !important;
+    border: 1px solid #673ab7 !important;
+    border-radius: 8px !important;
+    color: #673ab7 !important;
+    background: white !important;
+}
+
+.dataTables_wrapper .paginate_button.current,
+.dataTables_wrapper .paginate_button.current:hover {
+    background: #673ab7 !important;
+    color: white !important;
+    border-color: #673ab7 !important;
+}
+
+.dataTables_wrapper .paginate_button:hover {
+    background: rgba(103, 58, 183, 0.1) !important;
+    color: #673ab7 !important;
+}
+

@@ -1,0 +1,176 @@
+/*Crear Cliente y Editar Cliente*/
+.clientes_crear .form-container {
+  background-color: #fff;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #4b0082;
+  max-width: 600px;
+  margin: 0 auto 2.5rem auto;
+}
+
+.clientes_crear .form-container h2 {
+  color: #4b0082;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.clientes_crear .form-container .form-group label {
+  color: #4b0082;
+  font-weight: bold;
+}
+
+.clientes_crear .form-container .form-control {
+  border: 1px solid #4b0082;
+  border-radius: 4px;
+}
+
+.clientes_crear .form-container .btn-primary {
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  border: none;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  display: block;
+  margin: 1rem auto 0 auto;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.clientes_crear .form-container .btn-primary:hover {
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
+}
+
+/*clientes_editar*/
+
+.clientes_editar .form-container {
+  background-color: #fff !important;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #4b0082 !important;
+  max-width: 600px;
+  margin: 0 auto 2.5rem auto;
+}
+
+.clientes_editar .form-container h2 {
+  color: #4b0082;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.clientes_editar .form-container .form-group label {
+  color: #4b0082;
+  font-weight: bold;
+}
+
+.clientes_editar .form-container .form-control {
+  border: 1px solid #4b0082;
+  border-radius: 4px;
+}
+
+.clientes_editar .form-container .btn-primary {
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  border: none;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  display: block;
+  margin: 1rem auto 0 auto;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.clientes_editar .form-container .btn-primary:hover {
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
+}
+
+.clientes_editar .card {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.clientes_editar .card-header {
+  background-color: #4b0082;
+  color: white;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 8px 8px 0 0;
+}
+
+.clientes_editar .card-header h2 {
+  margin: 0;
+  color: #fff;
+}
+
+.clientes_editar .table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #333;
+  border-collapse: collapse;
+}
+
+.clientes_editar .btn-secondary {
+  background: linear-gradient(45deg, #4b0082, #6a11cb);
+  border: none;
+  color: white;
+  transition: background 0.3s ease, transform 0.3s ease;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.clientes_editar .btn-secondary:hover {
+  background: linear-gradient(45deg, #6a11cb, #4b0082);
+  transform: scale(1.05);
+}
+
+.clientes_editar .table th,
+.clientes_editar .table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border: 1px solid #dee2e6;
+}
+
+.clientes_editar .table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  background-color: #4b0082;
+  color: white;
+}
+
+.clientes_editar .table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+.clientes_editar .table tbody tr:hover {
+  background-color: #f4f4f4;
+}
+
+.clientes_editar .btn-warning {
+  background-color: #ffcc00;
+  border: none;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.clientes_editar .btn-warning:hover {
+  background-color: #e6b800;
+}
+
+.clientes_editar .btn-danger {
+  background-color: #ff4d4d;
+  border: none;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.clientes_editar .btn-danger:hover {
+  background-color: #e60000;
+}

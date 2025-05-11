@@ -1,0 +1,258 @@
+/*------------------------------------*
+  Login y Registro - Estilos Generales
+*------------------------------------*/
+.auth-container {
+  min-height: 100vh;
+  background: linear-gradient(45deg, #4b0082, #6a11cb);
+  padding: 2rem 0;
+}
+
+.auth-container .card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.auth-container .card-header {
+  background: linear-gradient(45deg, #4b0082, #6a11cb);
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+}
+
+.auth-container .card-body,
+.auth-body {
+  padding: 2rem;
+}
+
+.auth-container .form-group label,
+.auth-form .form-group label,
+.form-group label {
+  color: #4b0082;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.auth-container .form-control,
+.auth-form .form-control,
+.form-control {
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.auth-container .form-control:focus,
+.auth-form .form-control:focus {
+  border-color: #4b0082;
+  box-shadow: 0 0 0 0.2rem rgba(75, 0, 130, 0.25);
+  outline: none;
+}
+
+.auth-container .btn-primary {
+  background: linear-gradient(45deg, #4b0082, #6a11cb);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.auth-container .btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(45deg, #6a11cb, #4b0082);
+}
+
+/*----------------------------*
+  Página de Autenticación
+*----------------------------*/
+.auth-page {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.auth-box {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateY(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.auth-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Header */
+.auth-header {
+  background: linear-gradient(135deg, #0f3443 0%, #34e89e 100%);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.auth-header h2 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Formulario */
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Botones */
+.btn-auth {
+  background: linear-gradient(135deg, #0f3443 0%, #34e89e 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-auth:hover {
+  background: linear-gradient(135deg, #34e89e 0%, #0f3443 100%);
+  transform: translateY(-2px);
+}
+
+/* Footer */
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e1e1e1;
+}
+
+.auth-footer p {
+  color: #666;
+  margin: 0;
+}
+
+.auth-footer a,
+.auth-container .mt-3 a {
+  color: #4b0082;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.auth-footer a:hover,
+.auth-container .mt-3 a:hover {
+  color: #6a11cb;
+  text-decoration: underline;
+}
+
+.auth-container .mt-3 {
+  text-align: center;
+  color: #666;
+}
+
+/* Alertas */
+.auth-container .alert,
+.auth-body .alert {
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: none;
+}
+
+.auth-body .alert-danger {
+  background-color: #ffe6e6;
+  color: #cc0000;
+  border-left: 4px solid #cc0000;
+}
+
+/* Login y Registro */
+.login-page .auth-box {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.register-page .auth-box {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/*---------------------------*
+  Media Queries (al final)
+*---------------------------*/
+@media (max-width: 768px) {
+  .auth-box {
+    margin: 1rem;
+  }
+
+  .auth-header {
+    padding: 1.5rem;
+  }
+
+  .auth-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .auth-box {
+    margin: 0.5rem;
+  }
+
+  .auth-header {
+    padding: 1rem;
+  }
+
+  .auth-body {
+    padding: 1rem;
+  }
+
+  .auth-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn-auth {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}

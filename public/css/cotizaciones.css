@@ -1,0 +1,444 @@
+/*tablas de cotizaciones*/
+#cotizacionesTable {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+#cotizacionesTable thead th {
+  background: linear-gradient(135deg, #4b0082 0%, #6a11cb 100%);
+  color: white !important;
+  font-weight: 600;
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: none;
+}
+
+#cotizacionesTable tbody td {
+  padding: 15px;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 1rem;
+  color: #333;
+}
+
+#cotizacionesTable tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease;
+}
+
+#cotizacionesTable .badge {
+  display: inline-block;
+  padding: 8px 15px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#cotizacionesTable .badge.badge-warning {
+  background-color: #ffd700;
+  color: #000;
+}
+
+#cotizacionesTable .badge.badge-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+#cotizacionesTable .badge.badge-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+#cotizacionesTable .badge.bg-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+#cotizacionesTable .btn-group .btn {
+  margin: 0 3px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+#cotizacionesTable .btn-group .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#cotizacionesTable.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/*responsivos*/
+@media (max-width: 768px) {
+  #cotizacionesTable {
+    font-size: 0.9rem;
+  }
+
+  #cotizacionesTable thead th {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+
+  #cotizacionesTable tbody td {
+    padding: 10px;
+  }
+
+  #cotizacionesTable .badge {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+/*listado de cotizaciones*/
+.table-cotizaciones-container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.table-cotizaciones-container .card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.table-cotizaciones-container .card-header {
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  padding: 1.5rem;
+  border: none;
+}
+
+.table-cotizaciones-container .card-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/*Tabla de cotizaciones*/
+#cotizacionesTable {
+  width: 100% !important;
+  margin-bottom: 1rem;
+  background-color: white;
+}
+
+#cotizacionesTable thead th {
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border: none;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#cotizacionesTable tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #e9ecef;
+  text-align: center;
+}
+
+#cotizacionesTable tbody tr:hover {
+  background-color: rgba(103, 58, 183, 0.05);
+  transition: background-color 0.3s ease;
+}
+
+#cotizacionesTable .badge {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 30px;
+  text-transform: capitalize;
+}
+
+#cotizacionesTable .badge-warning {
+  background-color: #ffc107;
+  color: #000;
+}
+
+#cotizacionesTable .badge-success {
+  background-color: #28a745;
+  color: white;
+}
+
+#cotizacionesTable .badge-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+/*Responsividad */
+@media (max-width: 768px) {
+  .table-cotizaciones-container {
+    margin: 1rem auto;
+    max-width: 95%;
+  }
+
+  .table-cotizaciones-container .card-header h2 {
+    font-size: 1.5rem;
+  }
+
+  #cotizacionesTable thead th,
+  #cotizacionesTable tbody td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .dataTables_wrapper .dataTables_length,
+  .dataTables_wrapper .dataTables_filter {
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+}
+
+.table-cotizaciones-container {
+  margin: 2rem auto;
+  max-width: 95%;
+}
+
+.table-cotizaciones-container .card-header {
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  border: none;
+}
+
+.table-cotizaciones-container .card-header h2 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin: 0;
+  padding: 1rem;
+}
+
+#cotizacionesTable {
+  width: 100% !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#cotizacionesTable thead th {
+  background: #673ab7;
+  color: #ffffff !important;
+  font-weight: 600;
+  padding: 1.2rem 1rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border: none;
+}
+
+#cotizacionesTable tbody td {
+  padding: 1rem;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/*Estados de las cotizaciones*/
+#cotizacionesTable .badge {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#cotizacionesTable .badge-warning {
+  background: #ffd700;
+  color: #000000;
+}
+
+#cotizacionesTable .badge-success {
+  background: #28a745;
+  color: #ffffff;
+}
+
+#cotizacionesTable .badge-danger {
+  background: #dc3545;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  #cotizacionesTable thead th,
+  #cotizacionesTable tbody td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .dataTables_wrapper .dataTables_length,
+  .dataTables_wrapper .dataTables_filter {
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #cotizacionesTable thead th {
+    font-size: 0.85rem;
+    padding: 0.8rem 0.5rem;
+  }
+
+  #cotizacionesTable tbody td {
+    font-size: 0.85rem;
+    padding: 0.8rem 0.5rem;
+  }
+
+  #cotizacionesTable .badge {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .dataTables_wrapper .dataTables_filter input {
+    width: 200px;
+  }
+}
+
+/*historial de cotizaciones*/
+.cotizaciones-historial .card-header {
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  padding: 1.5rem;
+}
+
+.cotizaciones-historial .card-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.cotizaciones-historial .table {
+  margin-bottom: 0;
+}
+
+.cotizaciones-historial thead th {
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem;
+  border: none;
+  white-space: nowrap;
+}
+
+.cotizaciones-historial tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.cotizaciones-historial .text-end {
+  text-align: right !important;
+}
+
+.cotizaciones-historial .text-center {
+  text-align: center !important;
+}
+
+.cotizaciones-historial .badge {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.cotizaciones-historial .bg-warning {
+  background-color: #ffc107 !important;
+  color: #000;
+}
+
+.cotizaciones-historial .bg-success {
+  background-color: #198754 !important;
+  color: white;
+}
+
+.cotizaciones-historial .bg-danger {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+/*formulario de cotización*/
+.cotizacion-crear .card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.cotizacion-crear .card-header {
+  background: linear-gradient(135deg, #4b0082 0%, #6a11cb 100%);
+  padding: 1.5rem;
+}
+
+.cotizacion-crear .card-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.cotizacion-crear .form-label {
+  color: #4b0082;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.cotizacion-crear .form-control {
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: border-color 0.3s ease;
+}
+
+.cotizacion-crear .form-control:focus {
+  border-color: #4b0082;
+  box-shadow: 0 0 0 0.2rem rgba(75, 0, 130, 0.25);
+}
+
+.cotizacion-crear .form-control[readonly] {
+  background-color: #f8f9fa;
+}
+
+.cotizacion-crear .input-group-text {
+  background-color: #4b0082;
+  color: white;
+  border: none;
+}
+
+.cotizacion-crear .btn-primary {
+  background: linear-gradient(45deg, #4b0082, #6a11cb);
+  border: none;
+  padding: 1rem;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+}
+
+.cotizacion-crear .btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(45deg, #6a11cb, #4b0082);
+}
+
+.cotizacion-crear .btn-secondary {
+  background: #6c757d;
+  border: none;
+  padding: 1rem;
+}
+
+.cotizacion-crear h4 {
+  color: #4b0082;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}

@@ -9,6 +9,7 @@ if (isset($_SESSION['usuario_id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +20,10 @@ if (isset($_SESSION['usuario_id'])) {
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
     <link rel="stylesheet" href="/Cotizaciones/public/css/style.css">
+    <link rel="stylesheet" href="/Cotizaciones/public/css/index.css">
+
 </head>
+
 <body class="index-body">
     <header class="header-index">
         <div class="container">
@@ -174,4 +178,5 @@ if (isset($_SESSION['usuario_id'])) {
         });
     </script>
 </body>
+
 </html>
