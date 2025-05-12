@@ -48,6 +48,48 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.crear-producto {
+  background: linear-gradient(45deg, #673ab7, #512da8);
+  border: none;
+  color: white;
+  padding: 0.5rem 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  margin: 1rem auto;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(103, 58, 183, 0.3);
+  width: fit-content;
+}
+
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin: auto;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.crear-producto:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(103, 58, 183, 0.4);
+  background: linear-gradient(45deg, #512da8, #673ab7);
+}
+
+.crear-producto i {
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+}
+
+
+.productos_editar .crear-producto-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(75, 0, 130, 0.3);
+  background: linear-gradient(45deg, #673ab7, #4b0082);
+}
+
 .productos_editar .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(75, 0, 130, 0.3);

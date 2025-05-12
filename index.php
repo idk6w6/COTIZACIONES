@@ -34,7 +34,7 @@ if (isset($_SESSION['usuario_id'])) {
                 </h1>
                 <nav class="modern-nav">
                     <ul class="nav justify-content-center align-items-center flex-wrap">
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <a href="auth/login.php" class="btn-light">
                                 <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
                                 <span>Iniciar Sesión</span>

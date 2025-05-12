@@ -1,16 +1,4 @@
 <?php
-
-//Recuerda crear un archivo "credenciales.php" en la carpeta config/ asi:
-/* <?php
-const HOST = "----";
-const DB = "----";
-const USER = "----";
-const PASS = "----";
-const PORT = "----"; */
-//cambialo por los datos de tu bd
-//credenciales.php no se sube al github por el .gitignore
-//pato estuvo aqui
-
 include 'credenciales.php';
 
 class Database {

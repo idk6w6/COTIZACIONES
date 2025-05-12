@@ -44,47 +44,11 @@ function validateForm(e) {
 }
 
 function editarProducto(id) {
-    fetch(`/Cotizaciones/app/controllers/ProductosController.php?action=get&id=${id}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error('Error:', data.error);
-                alert('Error al cargar el producto: ' + data.error);
-                return;
-            }
-            
-            //Llenar formulario con datos del producto
-            document.getElementById('nombre_producto').value = data.nombre_producto || '';
-            document.getElementById('descripcion').value = data.descripcion || '';
-            document.getElementById('precio').value = data.precio || '';
-            document.getElementById('iva').value = data.iva || '16';
-            document.getElementById('unidad_medida_id').value = data.unidad_medida_id || '';
-            document.getElementById('unidad_peso').value = data.unidad_peso || '';
-            document.getElementById('metodo_costeo_id').value = data.metodo_costeo_id || '';
-            
-            //formulario a actualizar
-            const form = document.getElementById('productoForm');
-            form.querySelector('input[name="action"]').value = 'update';
-            
-            const existingId = form.querySelector('input[name="id"]');
-            if (existingId) {
-                existingId.remove();
-            }
-            
-            const hiddenId = document.createElement('input');
-            hiddenId.type = 'hidden';
-            hiddenId.name = 'id';
-            hiddenId.value = id;
-            form.appendChild(hiddenId);
-
-            form.querySelector('button[type="submit"]').textContent = 'Actualizar Producto';
-            
-            form.scrollIntoView({ behavior: 'smooth' });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error al cargar el producto: ' + error.message);
-        });
+    if (!id) {
+        alert('Error: No se pudo identificar el producto');
+        return;
+    }
+    window.location.href = `/Cotizaciones/app/views/productos/productos_crear_formulario.php?id=${id}&action=edit`;
 }
 
 function eliminarProducto(id) {
