@@ -120,6 +120,7 @@ $cliente = $resultado['cliente'];
                                         <th>Correo</th>
                                         <th>Dirección</th>
                                         <th>Acciones</th>
+                                        <th>Cotizar Ahora</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -140,6 +141,16 @@ $cliente = $resultado['cliente'];
                                                         <a href="#" onclick="return confirmarEliminacionCliente(<?= $cliente['id'] ?>)" class="btn btn-danger btn-sm">
                                                             <i class="fas fa-trash-alt"></i> Eliminar
                                                         </a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" 
+                                                                class="btn btn-primary" 
+                                                                onclick="window.location.href='/Cotizaciones/app/views/cotizaciones/cotizaciones_crear.php?producto_id=<?php echo htmlspecialchars($producto['id']); ?>'"
+                                                                title="Cotizar Producto">
+                                                            <i class="fas fa-calculator"></i>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -179,6 +190,8 @@ $cliente = $resultado['cliente'];
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    
     <script>
     function confirmarEliminacionCliente(id) {
         if (confirm('¿Está seguro de que desea eliminar este cliente?')) {

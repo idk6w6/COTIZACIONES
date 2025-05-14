@@ -87,8 +87,7 @@
                                                         <td>
                                                             <span data-bs-toggle="tooltip" 
                                                                 data-bs-placement="top" 
-                                                                title="<?= nl2br(htmlspecialchars($producto['descripcion'])) ?>">
-                                                                <?= substr($producto['descripcion'], 0, 20) . '...' ?>
+                                                                data-bs-title="<?php echo $producto['descripcion'] ?>">
                                                             </span>
                                                         </td>
                                                         <td><?php echo number_format($producto['precio'], 2); ?></td>
@@ -135,4 +134,9 @@
             </div>
         </div>
     </div>
-        <script src="/Cotizaciones/public/js/Product.js"></script>
+    
+    
+    <script src="/Cotizaciones/public/js/Product.js"></script>
+    <script src="/Cotizaciones/resources/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/Cotizaciones/resources/bootstrap.min.css">
+
