@@ -7,6 +7,8 @@ $unidades_medida = $controller->getUnidadesMedida();
 $metodos_costeo = $controller->getMetodosCosteo();
 $productos = $controller->index();
 ?>
+    <link rel="stylesheet" href="/Cotizaciones/public/css/styles.css">
+
 
 <div class="container productos_editar mt-4">
     <div class="row">
