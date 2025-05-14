@@ -50,15 +50,16 @@ function eliminarProducto(id) {
     });
 }
 
-function initializeTooltips() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl, {
-            html: true,
-            container: 'body'
-        });
+function Tooltip() {
+document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      new bootstrap.Tooltip(tooltipTriggerEl);
     });
+  });
 }
+
+Tooltip();
 
 document.addEventListener('DOMContentLoaded', function() {
     // Test SweetAlert2

@@ -135,6 +135,15 @@
         </div>
     </div>
     
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
     
     <script src="/Cotizaciones/public/js/Product.js"></script>
     <script src="/Cotizaciones/resources/bootstrap.bundle.min.js"></script>
