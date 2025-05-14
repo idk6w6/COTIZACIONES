@@ -41,14 +41,14 @@ class ProductosController {
                 ];
 
                 if ($this->model->create($data)) {
-                    header('Location: /Cotizaciones/app/views/productos/productos_editar.php?success=1');
+                    header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?success=1');
                     exit;
                 }
             } catch (Exception $e) {
                 error_log("Error al crear producto: " . $e->getMessage());
             }
         }
-        header('Location: /Cotizaciones/app/views/productos/productos_editar.php?error=1');
+        header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?error=1');
         exit;
     }
 
@@ -68,27 +68,36 @@ class ProductosController {
             ];
 
             if ($this->model->update($data)) {
-                header('Location: /Cotizaciones/app/views/productos/productos_editar.php?success=2');
+                header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?success=2');
                 exit;
             }
         }
-        header('Location: /Cotizaciones/app/views/productos/productos_editar.php?error=2');
+        header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?error=2');
         exit;
     }
 
     public function destroy() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
+        header('Content-Type: application/json');
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE' || 
+           ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete')) {
             try {
-                $id = $_POST['id'];
+                $id = $_SERVER['REQUEST_METHOD'] === 'DELETE' ? 
+                      filter_var($_GET['id'], FILTER_VALIDATE_INT) : 
+                      filter_var($_POST['id'], FILTER_VALIDATE_INT);
+
+                if (!$id) {
+                    throw new Exception('ID de producto inválido');
+                }
+
                 if ($this->model->delete($id)) {
-                    header('Content-Type: application/json');
                     echo json_encode(['success' => true]);
                     exit;
                 }
+
                 throw new Exception('No se pudo eliminar el producto');
             } catch (Exception $e) {
                 error_log("Error al eliminar producto: " . $e->getMessage());
-                header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'error' => $e->getMessage()]);
                 exit;
             }
@@ -105,40 +114,35 @@ class ProductosController {
 
     public function get($id) {
         try {
-            $query = "SELECT p.*, 
-                     mc.descripcion as metodo_costeo,
-                     (SELECT AVG(precio) FROM productos 
-                      WHERE metodo_costeo_id = p.metodo_costeo_id) as precio_promedio
-                     FROM productos p 
-                     JOIN metodos_costeo mc ON p.metodo_costeo_id = mc.id
-                     WHERE p.id = :id";
+            $query = "SELECT * FROM productos WHERE id = :id";
             $stmt = $this->model->conn->prepare($query);
             $stmt->execute(['id' => $id]);
             $producto = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($producto) {
-                $producto['precio'] = $this->ajustarPrecioPorMetodoCosteo($producto);
-                echo json_encode($producto);
-            } else {
-                echo json_encode(['error' => 'Producto no encontrado']);
+            if (!$producto) {
+                if (isset($_GET['action']) && $_GET['action'] === 'get') {
+                    header('Content-Type: application/json');
+                    echo json_encode(['error' => 'Producto no encontrado']);
+                    exit;
+                }
+                return null;
             }
-            exit;
-        } catch (Exception $e) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => $e->getMessage()]);
-            exit;
-        }
-    }
 
-    private function ajustarPrecioPorMetodoCosteo($producto) {
-        switch($producto['metodo_costeo']) {
-            case 'PEPS - Primeras Entradas, Primeras Salidas':
-            case 'Promedio Ponderado':
-            case 'Costo Identificado':
-            case 'Costo Estándar':
-                return $producto['precio'];
-            default:
-                return $producto['precio'];
+            if (isset($_GET['action']) && $_GET['action'] === 'get') {
+                header('Content-Type: application/json');
+                echo json_encode($producto);
+                exit;
+            }
+            
+            return $producto;
+        } catch (Exception $e) {
+            error_log("Error en get producto: " . $e->getMessage());
+            if (isset($_GET['action']) && $_GET['action'] === 'get') {
+                header('Content-Type: application/json');
+                echo json_encode(['error' => $e->getMessage()]);
+                exit;
+            }
+            return null;
         }
     }
 }

@@ -93,47 +93,20 @@ class Productos {
     public function delete($id) {
         try {
             $this->conn->beginTransaction();
-            
-            $checkCotizacionQuery = "SELECT COUNT(*) FROM detalles_cotizacion WHERE producto_id = :id";
-            $checkStmt = $this->conn->prepare($checkCotizacionQuery);
-            $checkStmt->execute(['id' => $id]);
-            
-            if ($checkStmt->fetchColumn() > 0) {
-                throw new Exception("No se puede eliminar el producto porque está siendo usado en cotizaciones existentes");
-            }
 
-            $getIdsQuery = "SELECT metodo_costeo_id, unidad_medida_id FROM productos WHERE id = :id";
-            $getIdsStmt = $this->conn->prepare($getIdsQuery);
-            $getIdsStmt->execute(['id' => $id]);
-            $ids = $getIdsStmt->fetch(PDO::FETCH_ASSOC);
+            // First delete related records in detalles_cotizacion
+            $stmt = $this->conn->prepare("DELETE FROM detalles_cotizacion WHERE producto_id = :id");
+            $stmt->execute(['id' => $id]);
 
-            $updateQuery = "UPDATE productos SET 
-                          metodo_costeo_id = NULL,
-                          unidad_medida_id = NULL 
-                          WHERE id = :id";
-            $updateStmt = $this->conn->prepare($updateQuery);
-            $updateStmt->execute(['id' => $id]);
-
-            $deleteQuery = "DELETE FROM productos WHERE id = :id";
-            $deleteStmt = $this->conn->prepare($deleteQuery);
-            $result = $deleteStmt->execute(['id' => $id]);
-
-            if ($ids['metodo_costeo_id']) {
-                $this->conn->exec("UPDATE metodos_costeo SET descripcion = descripcion WHERE id = " . $ids['metodo_costeo_id']);
-            }
-            if ($ids['unidad_medida_id']) {
-                $this->conn->exec("UPDATE unidades_medida SET descripcion = descripcion WHERE id = " . $ids['unidad_medida_id']);
-            }
+            // Then delete the product
+            $stmt = $this->conn->prepare("DELETE FROM productos WHERE id = :id");
+            $stmt->execute(['id' => $id]);
 
             $this->conn->commit();
-            return $result;
-        } catch (PDOException $e) {
-            $this->conn->rollBack();
-            error_log("Error al eliminar producto: " . $e->getMessage());
-            throw new Exception("Error en la base de datos al eliminar el producto: " . $e->getMessage());
+            return true;
         } catch (Exception $e) {
             $this->conn->rollBack();
-            throw $e;
+            throw new Exception("Error al eliminar el producto: " . $e->getMessage());
         }
     }
 

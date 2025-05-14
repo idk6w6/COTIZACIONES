@@ -6,12 +6,16 @@ $controller = new ProductosController();
 $unidades_medida = $controller->getUnidadesMedida();
 $metodos_costeo = $controller->getMetodosCosteo();
 
-// Obtener producto si estamos en modo edición
+// Verificar si estamos en modo edición
+$isEditing = isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit';
 $producto = null;
-$isEditing = false;
-if (isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit') {
-    $isEditing = true;
+
+if ($isEditing) {
     $producto = $controller->get($_GET['id']);
+    if (!$producto) {
+        echo "<script>alert('Producto no encontrado'); window.location.href='productos_editar.php';</script>";
+        exit;
+    }
 }
 ?>
 
@@ -30,15 +34,13 @@ if (isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit') 
                             <div class="form-group">
                                 <label for="nombre_producto">Nombre del Producto*</label>
                                 <input type="text" class="form-control" id="nombre_producto" name="nombre_producto" 
-                                       value="<?php echo $isEditing ? htmlspecialchars($producto['nombre_producto']) : ''; ?>" required>
+                                       value="<?php echo $isEditing ? $producto['nombre_producto'] : ''; ?>" required>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="descripcion">Descripción*</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?php 
-                            echo $isEditing ? htmlspecialchars($producto['descripcion']) : ''; 
-                        ?></textarea>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?php echo $isEditing ? $producto['descripcion'] : ''; ?></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -54,9 +56,9 @@ if (isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit') 
                             <div class="form-group">
                                 <label for="iva">IVA*</label>
                                 <select class="form-control" id="iva" name="iva" required>
-                                    <option value="0" <?php echo ($isEditing && $producto['iva'] == 0) ? 'selected' : ''; ?>>0% - Exento</option>
-                                    <option value="16" <?php echo ($isEditing && $producto['iva'] == 16) || !$isEditing ? 'selected' : ''; ?>>16% - General</option>
-                                    <option value="8" <?php echo ($isEditing && $producto['iva'] == 8) ? 'selected' : ''; ?>>8% - Fronterizo</option>
+                                    <option value="0" <?php echo $isEditing && $producto['iva'] == 0 ? 'selected' : ''; ?>>0% - Exento</option>
+                                    <option value="16" <?php echo $isEditing && $producto['iva'] == 16 ? 'selected' : ''; ?>>16% - General</option>
+                                    <option value="8" <?php echo $isEditing && $producto['iva'] == 8 ? 'selected' : ''; ?>>8% - Fronterizo</option>
                                 </select>
                                 <small class="form-text text-muted">Tasa de IVA según la región y tipo de producto</small>
                             </div>
@@ -81,9 +83,7 @@ if (isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit') 
                                 <select class="form-control" id="unidad_medida_id" name="unidad_medida_id" required>
                                     <option value="">Seleccione una unidad</option>
                                     <?php foreach ($unidades_medida as $unidad): ?>
-                                        <option value="<?php echo $unidad['id']; ?>" <?php echo ($isEditing && $producto['unidad_medida_id'] == $unidad['id']) ? 'selected' : ''; ?>>
-                                            <?php echo $unidad['descripcion']; ?>
-                                        </option>
+                                        <option value="<?php echo $unidad['id']; ?>" <?php echo $isEditing && $producto['unidad_medida_id'] == $unidad['id'] ? 'selected' : ''; ?>><?php echo $unidad['descripcion']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -116,7 +116,7 @@ if (isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit') 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="right"
                                         title="<?php echo obtenerDescripcionMetodoCosteo($metodo['descripcion']); ?>"
-                                        <?php echo ($isEditing && $producto['metodo_costeo_id'] == $metodo['id']) ? 'selected' : ''; ?>>
+                                        <?php echo $isEditing && $producto['metodo_costeo_id'] == $metodo['id'] ? 'selected' : ''; ?>>
                                     <?php echo $metodo['descripcion']; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -160,18 +160,18 @@ if (isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit') 
                         });
                     });
                     </script>
-                    <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                    <button type="submit" class="btn btn-primary">
+                        <?php echo $isEditing ? 'Actualizar' : 'Guardar'; ?> Producto
+                    </button>
                     <button type="button" 
-                                    class="btn btn-primary"
-                                    onclick="window.location.href='/Cotizaciones/app/views/productos/productos_editar.php'">
-                                    Volver a Listado de productos
-                            </button>
-
-
-
+                            class="btn btn-primary"
+                            onclick="window.location.href='/Cotizaciones/app/views/productos/productos_editar.php'">
+                            <i class="fas fa-list"></i> Listado de Productos
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<?php require_once(__DIR__ . '/../../../layout/admin_footer.php'); ?>
+</body>
+</html>

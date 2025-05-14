@@ -8,6 +8,9 @@ $metodos_costeo = $controller->getMetodosCosteo();
 $productos = $controller->index();
 ?>
 
+<link rel="stylesheet" href="sweetalert2.min.css">
+
+
 <div class="container productos_editar mt-4">
     <div class="row">
         <div class="col-md-12">
@@ -36,14 +39,12 @@ $productos = $controller->index();
                                     <?php endif; ?>
                                 </div>
                             </form>
-                            <button type="button" 
-                                    class="crear-producto"
-                                    onclick="window.location.href='/Cotizaciones/app/views/productos/productos_crear_formulario.php'"
-                                    <i class="fas fa-plus"></i> Crear un Producto
+                            <button class="productos_crear" onclick="location.href='productos_crear_formulario.php'">
+                                <i >Crear Producto</i>
                             </button>
                         </div>
-                    </div>        
-
+                    </div>
+                    
                     <?php if (empty($productos)): ?>
                         <div class="alert alert-info text-center">
                             <i class="fas fa-box-open fa-2x mb-2"></i>
@@ -93,10 +94,11 @@ $productos = $controller->index();
                                             endforeach; ?>
                                         </td>
                                         <td>
-                                            <button class="btn btn-warning btn-sm" onclick="editarProducto(<?php echo $producto['id']; ?>)">
+                                            <a href="productos_crear_formulario.php?id=<?php echo $producto['id']; ?>&action=edit" 
+                                               class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-danger btn-sm" onclick="eliminarProducto(<?php echo $producto['id']; ?>)">
+                                            </a>
+                                            <button class="btn btn-danger" id="btn_eliminar" onlclick="btn_eliminar()" onclick= "eliminarProducto(<?php echo $producto['id']; ?>)"  >
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
@@ -111,7 +113,7 @@ $productos = $controller->index();
         </div>
     </div>
 </div>
-<script src="/Cotizaciones/public/js/Product.js"></script>
-</body>
-</html>
 
+<script src="/Cotizaciones/resources/btn.js"></script>
+<script src="/Cotizaciones/resources/sweetalert2@11.js"></script>
+<script src="/Cotizaciones/public/js/Product.js"></script>
