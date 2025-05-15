@@ -3,7 +3,7 @@ const sequelize = require('../config/database');
 const Client = require('./Client');
 const User = require('./User');
 
-// funcion para definir el modelo de cotizacion
+//  modelo de cotizacion
 function definirCotizacion() {
     return sequelize.define('Quotation', {
         id: {
@@ -49,7 +49,7 @@ function definirCotizacion() {
 const Quotation = definirCotizacion();
 module.exports = Quotation;
 
-// funcion para calcular los totales
+// calcular los totales
 function calcularTotales(campos) {
     const precio = parseFloat(campos.precio.value) || 0;
     const cantidad = parseInt(campos.cantidad.value) || 0;
@@ -72,7 +72,7 @@ function calcularTotales(campos) {
     return total;
 }
 
-// funcion para habilitar o deshabilitar el boton de enviar
+// habilitar o deshabilitar el boton de enviar
 function manejarBotonSubmit(form, total) {
     const submitBtn = form.querySelector('button[type="submit"]');
     if (total <= 0) {
@@ -83,7 +83,7 @@ function manejarBotonSubmit(form, total) {
     }
 }
 
-// funcion para manejar la validacion del formulario
+// validacion del formulario
 function validarFormulario(e, campos, form) {
     e.preventDefault();
     const total = parseFloat(campos.total.value);
@@ -102,7 +102,7 @@ function validarFormulario(e, campos, form) {
     form.submit();
 }
 
-// funcion para iniciar la logica de cotizacion
+// logica de cotizacion
 function iniciarCotizacion() {
     const form = document.getElementById('cotizacionForm');
     const campos = {
@@ -133,7 +133,6 @@ function iniciarCotizacion() {
     calcularTotales(campos);
 }
 
-// funcion para manejar el segundo evento DOMContentLoaded
 function validarAntesDeEnviar() {
     const form = document.getElementById('cotizacionForm');
     if (form) {
@@ -163,7 +162,7 @@ function validarAntesDeEnviar() {
     }
 }
 
-// escuchar el evento DOMContentLoaded para iniciar la cotizacion
+// escuchar el evento para iniciar la cotizacion
 document.addEventListener('DOMContentLoaded', function() {
     iniciarCotizacion();
     validarAntesDeEnviar();

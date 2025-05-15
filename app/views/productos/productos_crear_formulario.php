@@ -6,7 +6,6 @@ $controller = new ProductosController();
 $unidades_medida = $controller->getUnidadesMedida();
 $metodos_costeo = $controller->getMetodosCosteo();
 
-// Verificar si estamos en modo edición
 $isEditing = isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] === 'edit';
 $producto = null;
 
@@ -24,7 +23,8 @@ if ($isEditing) {
         <div class="col-md-12">
             <div class="form-container">
                 <h2>Gestión de Productos</h2>
-                <form id="productoForm" method="POST" action="/Cotizaciones/app/controllers/ProductosController.php">
+                <div id="mensajeResultado" class="alert d-none"></div>
+                <form id="productoForm" method="POST">
                     <input type="hidden" name="action" value="<?php echo $isEditing ? 'update' : 'store'; ?>">
                     <?php if ($isEditing): ?>
                         <input type="hidden" name="id" value="<?php echo $producto['id']; ?>">
@@ -142,24 +142,7 @@ if ($isEditing) {
                         return $descripciones[$metodo] ?? 'Método de costeo';
                     }
                     ?>
-
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        //tooltips de Bootstrap
-                        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                            return new bootstrap.Tooltip(tooltipTriggerEl, {
-                                html: true,
-                                container: 'body'
-                            });
-                        });
-
-                        //Actualizar tooltips cuando cambie el select
-                        document.getElementById('metodo_costeo_id').addEventListener('change', function() {
-                            tooltipList.forEach(tooltip => tooltip.update());
-                        });
-                    });
-                    </script>
+                    
                     <button type="submit" class="btn btn-primary">
                         <?php echo $isEditing ? 'Actualizar' : 'Guardar'; ?> Producto
                     </button>
@@ -173,5 +156,7 @@ if ($isEditing) {
         </div>
     </div>
 </div>
+
+<script src="/Cotizaciones/public/js/product-crear-formulario.js"></script>
 </body>
 </html>

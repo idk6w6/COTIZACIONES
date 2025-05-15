@@ -1,5 +1,5 @@
     <?php
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/Cotizaciones/layout/user_header.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/Cotizaciones/layout/admin_header.php');
     require_once(__DIR__ . '/../../controllers/CotizacionesController.php');
 
     $controller = new CotizacionesController();
@@ -188,7 +188,11 @@
 
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary btn-lg">Generar Cotización</button>
-                                <a href="/Cotizaciones/app/views/productos/productos_crear.php" class="btn btn-secondary">Cancelar</a>
+                                <button type="button" 
+                                    class="btn btn-primary"
+                                    onclick="window.location.href='/Cotizaciones/app/views/productos/productos_editar.php'">
+                                    <i class="fas fa-list"></i> Listado de Productos
+                                </button>                            
                             </div>
                         </form>
                     </div>

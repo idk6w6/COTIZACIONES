@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 Tooltip();
 
 document.addEventListener('DOMContentLoaded', function() {
+    
     // Test SweetAlert2
     console.log('SweetAlert2:', typeof Swal !== 'undefined');
     initializeTooltips();

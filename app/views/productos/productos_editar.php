@@ -11,6 +11,7 @@ $productos = $controller->index();
 <link rel="stylesheet" href="sweetalert2.min.css">
 
 
+
 <div class="container productos_editar mt-4">
     <div class="row">
         <div class="col-md-12">
@@ -65,6 +66,7 @@ $productos = $controller->index();
                                     <th>Stock</th>
                                     <th>Método de Costeo</th>
                                     <th>Acciones</th>
+                                    <th>Cotizar Ahora</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -107,6 +109,16 @@ $productos = $controller->index();
                                             <button class="btn btn-danger" id="btn_eliminar" onlclick="btn_eliminar()" onclick= "eliminarProducto(<?php echo $producto['id']; ?>)"  >
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" 
+                                                        class="btn btn-primary" 
+                                                        onclick="window.location.href='/Cotizaciones/app/views/cotizaciones/cotizaciones_crear.php?producto_id=<?php echo htmlspecialchars($producto['id']); ?>'"
+                                                        title="Cotizar Producto">
+                                                    <i class="fas fa-calculator"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

@@ -204,7 +204,7 @@ class CotizacionesController {
             $precio = $producto['precio'];
             $cantidad = $datos['cantidad'];
             
-            //Calcular todos los montos
+            //Calcular montos
             $subtotal = $cantidad * $precio;
             $montoDescuento = ($subtotal * $producto['descuento']) / 100;
             $baseIva = $subtotal - $montoDescuento;

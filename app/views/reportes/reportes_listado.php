@@ -17,6 +17,7 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
     <h2 class="mb-4">Reportes de Cotizaciones</h2>
     
     <div class="row justify-content-center">
+
         <!-- Gráfica de Usuarios y Clientes -->
         <div class="col-lg-8 mb-4">
             <div class="card shadow h-100">
@@ -57,6 +58,7 @@ $cotizaciones = $cotizacionesController->obtenerTodasLasCotizaciones();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
     // Datos para la gráfica de usuarios y clientes
     const usuariosData = {
         labels: ['Total Usuarios', 'Administradores', 'Clientes'],
@@ -106,21 +108,21 @@ document.addEventListener('DOMContentLoaded', function() {
     ?>
 
     productosData.datasets[0].backgroundColor = [
-        'rgba(103, 58, 183, 0.8)',    // Morado principal
-        'rgba(156, 39, 176, 0.8)',    // Morado más intenso
-        'rgba(33, 150, 243, 0.8)',    // Azul
-        'rgba(0, 188, 212, 0.8)',     // Cyan
-        'rgba(233, 30, 99, 0.8)'      // Rosa
+        'rgba(103, 58, 183, 0.8)',
+        'rgba(156, 39, 176, 0.8)',
+        'rgba(33, 150, 243, 0.8)',
+        'rgba(0, 188, 212, 0.8)',
+        'rgba(233, 30, 99, 0.8)'
     ];
     productosData.datasets[0].borderColor = [
-        'rgb(103, 58, 183)',          // Morado principal
-        'rgb(156, 39, 176)',          // Morado más intenso
-        'rgb(33, 150, 243)',          // Azul
-        'rgb(0, 188, 212)',           // Cyan
-        'rgb(233, 30, 99)'            // Rosa
+        'rgb(103, 58, 183)',
+        'rgb(156, 39, 176)',
+        'rgb(33, 150, 243)',
+        'rgb(0, 188, 212)',
+        'rgb(233, 30, 99)'
     ];
 
-    // Datos para la gráfica de estados
+    //gráfica de estados
     const estadosData = {
         labels: ['Pendiente', 'Realizada', 'Cancelada'],
         datasets: [{
@@ -146,7 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }]
     };
 
-    // Configuración y creación de gráficas
     new Chart(document.getElementById('usuariosChart'), {
         type: 'bar',
         data: usuariosData,

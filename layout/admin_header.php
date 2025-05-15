@@ -24,12 +24,7 @@ if (!str_contains($current_path, '/auth/') && !isset($_SESSION['usuario_id'])) {
     <link rel="stylesheet" href="/Cotizaciones/public/css/dataTables.css">
     <link rel="stylesheet" href="/Cotizaciones/public/css/productos.css">
 
-
-
-
-    <style>
-
-    </style>
+    
 </head>
 
 <body>

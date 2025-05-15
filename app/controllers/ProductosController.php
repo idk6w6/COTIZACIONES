@@ -41,39 +41,57 @@ class ProductosController {
                 ];
 
                 if ($this->model->create($data)) {
-                    header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?success=1');
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Producto creado exitosamente'
+                    ]);
                     exit;
                 }
             } catch (Exception $e) {
-                error_log("Error al crear producto: " . $e->getMessage());
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error al crear el producto: ' . $e->getMessage()
+                ]);
+                exit;
             }
         }
-        header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?error=1');
-        exit;
     }
 
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
-            $data = [
-                'id' => $_POST['id'],
-                'nombre_producto' => $_POST['nombre_producto'],
-                'descripcion' => $_POST['descripcion'],
-                'precio' => $_POST['precio'],
-                'iva' => $_POST['iva'],
-                'unidad_medida_id' => $_POST['unidad_medida_id'],
-                'unidad_peso' => $_POST['unidad_peso'],
-                'metodo_costeo_id' => $_POST['metodo_costeo_id'],
-                'stock' => $_POST['stock'],
-                'descuento' => isset($_POST['descuento']) ? $_POST['descuento'] : 0
-            ];
+            try {
+                $data = [
+                    'id' => $_POST['id'],
+                    'nombre_producto' => $_POST['nombre_producto'],
+                    'descripcion' => $_POST['descripcion'],
+                    'precio' => $_POST['precio'],
+                    'iva' => $_POST['iva'],
+                    'unidad_medida_id' => $_POST['unidad_medida_id'],
+                    'unidad_peso' => $_POST['unidad_peso'],
+                    'metodo_costeo_id' => $_POST['metodo_costeo_id'],
+                    'stock' => $_POST['stock'],
+                    'descuento' => isset($_POST['descuento']) ? $_POST['descuento'] : 0
+                ];
 
-            if ($this->model->update($data)) {
-                header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?success=2');
+                if ($this->model->update($data)) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Producto actualizado exitosamente'
+                    ]);
+                    exit;
+                }
+            } catch (Exception $e) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error al actualizar el producto: ' . $e->getMessage()
+                ]);
                 exit;
             }
         }
-        header('Location: /Cotizaciones/app/views/productos/productos_crear_formulario.php?error=2');
-        exit;
     }
 
     public function destroy() {
@@ -167,4 +185,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+
+<?php
+    function store($data) {
+    try {
+        if (empty($data['nombre_producto']) || empty($data['precio'])) {
+            throw new Exception('Faltan campos requeridos');
+        }
+
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => 'Producto guardado exitosamente',
+            'data' => $data['id']
+        ]);
+        exit;
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        http_response_code(400);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ]);
+        exit;
+    }
+}
+
+    function update($data) {
+    try {
+        if (empty($data['id']) || empty($data['nombre_producto'])) {
+            throw new Exception('Faltan campos requeridos');
+        }
+
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => 'Producto actualizado exitosamente',
+            'data' => $data['id']
+        ]);
+        exit;
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        http_response_code(400);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ]);
+        exit;
+    }
+}
+
+
 

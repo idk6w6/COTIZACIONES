@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Redirect logged in users to dashboard
 if (isset($_SESSION['usuario_id'])) {
     header("Location: dashboard/index.php");
     exit();
@@ -21,6 +20,7 @@ if (isset($_SESSION['usuario_id'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
     <link rel="stylesheet" href="/Cotizaciones/public/css/style.css">
     <link rel="stylesheet" href="/Cotizaciones/public/css/index.css">
+
 
 </head>
 
@@ -154,6 +154,7 @@ if (isset($_SESSION['usuario_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
     <script>
         AOS.init({
             duration: 800,
@@ -177,6 +178,6 @@ if (isset($_SESSION['usuario_id'])) {
             }
         });
     </script>
-</body>
 
+</body>
 </html>

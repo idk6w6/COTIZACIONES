@@ -25,9 +25,6 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['nombre_usuario'])) {
     <link rel="stylesheet" href="/Cotizaciones/public/css/dashboard.css">
 
 
-
-
-
 </head>
 
 <body>

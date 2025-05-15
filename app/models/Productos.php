@@ -94,11 +94,9 @@ class Productos {
         try {
             $this->conn->beginTransaction();
 
-            // First delete related records in detalles_cotizacion
             $stmt = $this->conn->prepare("DELETE FROM detalles_cotizacion WHERE producto_id = :id");
             $stmt->execute(['id' => $id]);
 
-            // Then delete the product
             $stmt = $this->conn->prepare("DELETE FROM productos WHERE id = :id");
             $stmt->execute(['id' => $id]);
 
