@@ -1,5 +1,5 @@
     <?php
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/Cotizaciones/layout/admin_header.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/Cotizaciones/layout/user_header.php');
     require_once(__DIR__ . '/../../controllers/CotizacionesController.php');
 
     $controller = new CotizacionesController();
@@ -134,7 +134,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="cantidad" class="form-label">Cantidad*</label>
                                         <input type="number" class="form-control" id="cantidad" name="cantidad" 
-                                            value="1" min="1" max="<?php echo $producto['stock']; ?>" 
+                                            value="0" min="1" max="<?php echo $producto['stock']; ?>" 
                                             required onchange="actualizarCantidadMax(<?php echo $producto_id; ?>)">
                                         <small class="text-muted">Stock disponible: <?php echo $producto['stock']; ?></small>
                                     </div>
@@ -191,7 +191,7 @@
                                 <button type="button" 
                                     class="btn btn-primary"
                                     onclick="window.location.href='/Cotizaciones/app/views/productos/productos_editar.php'">
-                                    <i class="fas fa-list"></i> Listado de Productos
+                                    <i class="fas fa-list"></i> Volver a Listado de Productos
                                 </button>                            
                             </div>
                         </form>

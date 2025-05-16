@@ -1,0 +1,23 @@
+<IfModule mod_rewrite.c>
+
+  RewriteEngine On
+  RewriteBase /Cotizaciones/
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+
+  RewriteRule ^(.*)$ index.php/$1 [L]
+
+  Options -Indexes
+
+<FilesMatch "\.(\.gitignore|\.htaccess|composer\.(json|lock)|README\.md|config/credenciales\.php)$">
+    Order allow,deny
+    Deny from all
+    RewriteEngine On
+    RewriteRule .* - [R=403,L]
+</FilesMatch>
+
+    ErrorDocument 403 /Cotizaciones/public/403.html
+    
+
+</IfModule>

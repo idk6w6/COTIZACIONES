@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['usuario_id'])) {
-    header("Location: dashboard/index.php");
+    header('Location: /Cotizaciones/index.php');
     exit();
 }
 ?>
